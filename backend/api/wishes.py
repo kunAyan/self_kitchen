@@ -10,7 +10,7 @@ from api import wishes_bp as bp
 @bp.route('/wishes', methods=['GET'])
 @jwt_required()
 def list_wishes():
-    wishes = Wish.query.order_by(Wish.likes.desc(), Wish.created_at.desc()).all()
+    wishes = Wish.query.order_by(Wish.priority.desc(), Wish.coins.desc(), Wish.likes.desc(), Wish.created_at.desc()).all()
     return jsonify({'wishes': [w.to_dict() for w in wishes]}), 200
 
 
@@ -26,7 +26,7 @@ def create_wish():
     wish = Wish(
         user_id=user.id, title=title,
         description=data.get('description', '').strip(),
-        is_anonymous=data.get('is_anonymous', False),
+        priority=data.get('priority', 2),
     )
     db.session.add(wish)
     db.session.commit()

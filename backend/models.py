@@ -367,7 +367,7 @@ class Wish(db.Model):
     status = db.Column(db.String(20), default='pending')  # pending | fulfilled
     likes = db.Column(db.Integer, default=0)
     coins = db.Column(db.Integer, default=0)                 # total coins invested
-    is_anonymous = db.Column(db.Boolean, default=False)      # anonymous wish
+    priority = db.Column(db.Integer, default=2)              # 1=随便 2=想吃 3=超想
     fulfill_note = db.Column(db.Text, default='')            # admin note on fulfill
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
@@ -379,7 +379,7 @@ class Wish(db.Model):
             'user_nickname': self.user.nickname if self.user else '',
             'title': self.title, 'description': self.description,
             'status': self.status, 'likes': self.likes,
-            'coins': self.coins, 'is_anonymous': self.is_anonymous,
+            'coins': self.coins, 'priority': self.priority,
             'fulfill_note': self.fulfill_note,
             'created_at': self.created_at.isoformat() if self.created_at else None,
         }

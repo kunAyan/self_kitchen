@@ -20,7 +20,7 @@
           <view class="wc-body">
             <text class="wc-title">{{ w.title }}</text>
             <text class="wc-desc" v-if="w.description">{{ w.description }}</text>
-            <text class="wc-meta">{{ w.is_anonymous ? '🎁神秘食客' : w.user_nickname }} · {{ fmt(w.created_at) }}</text>
+            <text class="wc-meta">{{ w.user_nickname }} · {{ fmt(w.created_at) }} · {{ prioLabel(w.priority) }}</text>
           </view>
         </view>
         <view class="wc-right">
@@ -60,9 +60,13 @@
         <text class="modal-title">🌟 许个愿吧</text>
         <input class="modal-input" v-model="newTitle" placeholder="想吃什么菜？" maxlength="50" />
         <textarea class="modal-textarea" v-model="newDesc" placeholder="描述一下（选填）" maxlength="200" />
-        <view class="anon-row" @click="isAnon = !isAnon">
-          <text>{{ isAnon ? '🎁' : '👤' }}</text>
-          <text class="anon-label">{{ isAnon ? '匿名许愿（大厨实现后揭晓）' : '公开许愿' }}</text>
+        <view class="priority-row">
+          <text class="priority-label">优先级</text>
+          <view class="priority-chips">
+            <text class="pchip" :class="{ active: priority === 3 }" @click="priority = 3">🔥超想</text>
+            <text class="pchip" :class="{ active: priority === 2 }" @click="priority = 2">😋想吃</text>
+            <text class="pchip" :class="{ active: priority === 1 }" @click="priority = 1">🤔随便</text>
+          </view>
         </view>
         <view class="modal-btns">
           <button class="mbtn cancel" @click="showAdd = false">取消</button>
@@ -98,7 +102,7 @@ const showAdd = ref(false)
 const showFulfill = ref(false)
 const newTitle = ref('')
 const newDesc = ref('')
-const isAnon = ref(false)
+const priority = ref(2)
 const fulfillTarget = ref(null)
 const fulfillNote = ref('')
 const saving = ref(false)
@@ -115,6 +119,8 @@ async function fetchWishes() {
   try { const res = await get('/wishes'); wishes.value = res.wishes || [] } catch (e) { console.error(e) }
 }
 
+function prioLabel(p) { const m = { 3: '🔥', 2: '😋', 1: '🤔' }; return m[p] || '' }
+
 function fmt(iso) {
   if (!iso) return ''
   const d = new Date(iso); const p = n => String(n).padStart(2, '0')
@@ -125,9 +131,9 @@ async function submitWish() {
   if (!newTitle.value.trim()) { uni.showToast({ title: '请输入菜名', icon: 'none' }); return }
   saving.value = true
   try {
-    await post('/wishes', { title: newTitle.value.trim(), description: newDesc.value.trim(), is_anonymous: isAnon.value })
+    await post('/wishes', { title: newTitle.value.trim(), description: newDesc.value.trim(), priority: priority.value })
     uni.showToast({ title: '许愿成功！', icon: 'success' })
-    showAdd.value = false; newTitle.value = ''; newDesc.value = ''; isAnon.value = false
+    showAdd.value = false; newTitle.value = ''; newDesc.value = ''; priority.value = 2
     fetchWishes()
     authStore.refreshProfile()
   } catch (e) { uni.showToast({ title: e.msg || '失败', icon: 'none' }) }
@@ -202,8 +208,11 @@ function doDelete(w) {
 .coin-num { font-size: 22rpx; color: #F9A825; font-weight: 600; }
 .like-btn { display: flex; align-items: center; gap: 4rpx; padding: 4rpx 8rpx; background: #F5F5F5; border-radius: 12rpx; }
 .like-num { font-size: 22rpx; color: #888; }
-.anon-row { display: flex; align-items: center; gap: 8rpx; padding: 12rpx 0; margin-bottom: 12rpx; }
-.anon-label { font-size: 24rpx; color: #888; }
+.priority-row { display: flex; align-items: center; gap: 12rpx; padding: 12rpx 0; margin-bottom: 12rpx; }
+.priority-label { font-size: 24rpx; color: #888; }
+.priority-chips { display: flex; gap: 8rpx; }
+.pchip { font-size: 24rpx; padding: 8rpx 16rpx; border-radius: 16rpx; background: #F5F5F5; color: #999; }
+.pchip.active { background: #FFF0F3; color: #FF7B93; font-weight: 600; }
 .like-num-static { font-size: 22rpx; color: #BBB; }
 .fulfill-btn { font-size: 24rpx; color: #FF7B93; font-weight: 600; padding: 4rpx 12rpx; background: #FFF0F3; border-radius: 12rpx; }
 .del-btn { font-size: 24rpx; padding: 4rpx; }
