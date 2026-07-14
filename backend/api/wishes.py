@@ -23,7 +23,11 @@ def create_wish():
     if not title:
         return jsonify({'msg': '请输入想吃的菜名'}), 400
 
-    wish = Wish(user_id=user.id, title=title, description=data.get('description', '').strip())
+    wish = Wish(
+        user_id=user.id, title=title,
+        description=data.get('description', '').strip(),
+        is_anonymous=data.get('is_anonymous', False),
+    )
     db.session.add(wish)
     db.session.commit()
     return jsonify({'wish': wish.to_dict()}), 201
@@ -36,6 +40,20 @@ def like_wish(wish_id):
     wish.likes = (wish.likes or 0) + 1
     db.session.commit()
     return jsonify({'wish': wish.to_dict()}), 200
+
+
+@bp.route('/wishes/<int:wish_id>/coin', methods=['POST'])
+@jwt_required()
+def coin_wish(wish_id):
+    """Invest coins into a wish (costs 1 wish_coin from current user)."""
+    user = get_current_user()
+    wish = Wish.query.get_or_404(wish_id)
+    if user.wish_coins <= 0:
+        return jsonify({'msg': '许愿币不足！下月会重置', 'coins': user.wish_coins}), 400
+    user.wish_coins -= 1
+    wish.coins = (wish.coins or 0) + 1
+    db.session.commit()
+    return jsonify({'wish': wish.to_dict(), 'coins_left': user.wish_coins}), 200
 
 
 @bp.route('/admin/wishes/<int:wish_id>/fulfill', methods=['PUT'])

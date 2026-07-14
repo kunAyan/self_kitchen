@@ -21,6 +21,7 @@ class User(db.Model):
     avatar = db.Column(db.String(256), default='')
     favorite_dish_ids = db.Column(db.Text, default='[]')  # JSON array of dish IDs
     badge_title = db.Column(db.String(50), default='')      # selected achievement title
+    wish_coins = db.Column(db.Integer, default=3)            # monthly wish coins
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     orders = db.relationship('Order', backref='user', lazy='dynamic',
@@ -47,6 +48,7 @@ class User(db.Model):
             'avatar': self.avatar,
             'favorite_dish_ids': self.favorite_dish_ids,
             'badge_title': self.badge_title,
+            'wish_coins': self.wish_coins,
             'created_at': self.created_at.isoformat() if self.created_at else None,
         }
 
@@ -364,7 +366,9 @@ class Wish(db.Model):
     description = db.Column(db.Text, default='')
     status = db.Column(db.String(20), default='pending')  # pending | fulfilled
     likes = db.Column(db.Integer, default=0)
-    fulfill_note = db.Column(db.Text, default='')           # admin note on fulfill
+    coins = db.Column(db.Integer, default=0)                 # total coins invested
+    is_anonymous = db.Column(db.Boolean, default=False)      # anonymous wish
+    fulfill_note = db.Column(db.Text, default='')            # admin note on fulfill
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     user = db.relationship('User', backref='wishes')
@@ -375,6 +379,7 @@ class Wish(db.Model):
             'user_nickname': self.user.nickname if self.user else '',
             'title': self.title, 'description': self.description,
             'status': self.status, 'likes': self.likes,
+            'coins': self.coins, 'is_anonymous': self.is_anonymous,
             'fulfill_note': self.fulfill_note,
             'created_at': self.created_at.isoformat() if self.created_at else None,
         }

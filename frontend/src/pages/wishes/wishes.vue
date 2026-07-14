@@ -1,6 +1,9 @@
 <template>
   <view class="wishes-page">
-    <view class="page-header"><text class="page-title">🌟 许愿池</text></view>
+    <view class="page-header">
+      <text class="page-title">🌟 许愿池</text>
+      <view class="coins-badge">🪙 x{{ authStore.user?.wish_coins || 0 }}</view>
+    </view>
 
     <!-- Tabs -->
     <view class="tab-bar">
@@ -17,14 +20,13 @@
           <view class="wc-body">
             <text class="wc-title">{{ w.title }}</text>
             <text class="wc-desc" v-if="w.description">{{ w.description }}</text>
-            <text class="wc-meta">{{ w.user_nickname }} · {{ fmt(w.created_at) }}</text>
+            <text class="wc-meta">{{ w.is_anonymous ? '🎁神秘食客' : w.user_nickname }} · {{ fmt(w.created_at) }}</text>
           </view>
         </view>
         <view class="wc-right">
-          <view class="like-btn" @click="doLike(w)">
-            <text>👍</text><text class="like-num">{{ w.likes || 0 }}</text>
-          </view>
-          <text v-if="authStore.isAdmin" class="fulfill-btn" @click="doFulfill(w)">✨实现</text>
+          <view class="coin-btn" @click="doCoin(w)"><text>🪙</text><text class="coin-num">{{ w.coins || 0 }}</text></view>
+          <view class="like-btn" @click="doLike(w)"><text>👍</text><text class="like-num">{{ w.likes || 0 }}</text></view>
+          <text v-if="authStore.isAdmin && w.status==='pending'" class="fulfill-btn" @click="doFulfill(w)">✨实现</text>
           <text v-if="w.user_id === authStore.user?.id || authStore.isAdmin" class="del-btn" @click="doDelete(w)">🗑️</text>
         </view>
       </view>
@@ -58,6 +60,10 @@
         <text class="modal-title">🌟 许个愿吧</text>
         <input class="modal-input" v-model="newTitle" placeholder="想吃什么菜？" maxlength="50" />
         <textarea class="modal-textarea" v-model="newDesc" placeholder="描述一下（选填）" maxlength="200" />
+        <view class="anon-row" @click="isAnon = !isAnon">
+          <text>{{ isAnon ? '🎁' : '👤' }}</text>
+          <text class="anon-label">{{ isAnon ? '匿名许愿（大厨实现后揭晓）' : '公开许愿' }}</text>
+        </view>
         <view class="modal-btns">
           <button class="mbtn cancel" @click="showAdd = false">取消</button>
           <button class="mbtn confirm" :loading="saving" @click="submitWish">许愿</button>
@@ -92,6 +98,7 @@ const showAdd = ref(false)
 const showFulfill = ref(false)
 const newTitle = ref('')
 const newDesc = ref('')
+const isAnon = ref(false)
 const fulfillTarget = ref(null)
 const fulfillNote = ref('')
 const saving = ref(false)
@@ -99,7 +106,10 @@ const saving = ref(false)
 const pendingWishes = computed(() => wishes.value.filter(w => w.status === 'pending'))
 const fulfilledWishes = computed(() => wishes.value.filter(w => w.status === 'fulfilled'))
 
-onMounted(() => fetchWishes())
+onMounted(async () => {
+  await authStore.refreshProfile().catch(() => {})
+  fetchWishes()
+})
 
 async function fetchWishes() {
   try { const res = await get('/wishes'); wishes.value = res.wishes || [] } catch (e) { console.error(e) }
@@ -115,16 +125,30 @@ async function submitWish() {
   if (!newTitle.value.trim()) { uni.showToast({ title: '请输入菜名', icon: 'none' }); return }
   saving.value = true
   try {
-    await post('/wishes', { title: newTitle.value.trim(), description: newDesc.value.trim() })
+    await post('/wishes', { title: newTitle.value.trim(), description: newDesc.value.trim(), is_anonymous: isAnon.value })
     uni.showToast({ title: '许愿成功！', icon: 'success' })
-    showAdd.value = false; newTitle.value = ''; newDesc.value = ''
+    showAdd.value = false; newTitle.value = ''; newDesc.value = ''; isAnon.value = false
     fetchWishes()
+    authStore.refreshProfile()
   } catch (e) { uni.showToast({ title: e.msg || '失败', icon: 'none' }) }
   finally { saving.value = false }
 }
 
 async function doLike(w) {
   try { await post(`/wishes/${w.id}/like`); w.likes = (w.likes || 0) + 1 } catch (e) {}
+}
+
+async function doCoin(w) {
+  if ((authStore.user?.wish_coins || 0) <= 0) {
+    uni.showToast({ title: '许愿币不足！下月重置', icon: 'none' })
+    return
+  }
+  try {
+    const res = await post(`/wishes/${w.id}/coin`)
+    w.coins = res.wish.coins
+    authStore.user.wish_coins = res.coins_left
+    uni.showToast({ title: '投币成功！', icon: 'success' })
+  } catch (e) { uni.showToast({ title: e.msg || '投币失败', icon: 'none' }) }
 }
 
 function doFulfill(w) { fulfillTarget.value = w; fulfillNote.value = ''; showFulfill.value = true }
@@ -154,7 +178,7 @@ function doDelete(w) {
 
 <style lang="scss" scoped>
 .wishes-page { min-height: 100vh; background: #FFF5F7; padding: 24rpx 24rpx 120rpx; }
-.page-header { margin-bottom: 16rpx; }
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16rpx; }
 .page-title { font-size: 36rpx; font-weight: 700; color: #4A4A4A; }
 
 .tab-bar { display: flex; background: #FFF; border-radius: 16rpx; margin-bottom: 16rpx; overflow: hidden; }
@@ -173,8 +197,13 @@ function doDelete(w) {
 .wc-meta { font-size: 22rpx; color: #CCC; margin-top: 4rpx; display: block; }
 .wc-fulfill-note { font-size: 22rpx; color: #FF7B93; margin-top: 4rpx; display: block; }
 .wc-right { display: flex; flex-direction: column; align-items: flex-end; gap: 8rpx; flex-shrink: 0; margin-left: 12rpx; }
+.coins-badge { font-size: 26rpx; font-weight: 600; color: #FF7B93; background: #FFF0F3; padding: 8rpx 20rpx; border-radius: 20rpx; }
+.coin-btn { display: flex; align-items: center; gap: 2rpx; padding: 4rpx 8rpx; background: #FFF8E1; border-radius: 12rpx; margin-bottom: 4rpx; }
+.coin-num { font-size: 22rpx; color: #F9A825; font-weight: 600; }
 .like-btn { display: flex; align-items: center; gap: 4rpx; padding: 4rpx 8rpx; background: #F5F5F5; border-radius: 12rpx; }
 .like-num { font-size: 22rpx; color: #888; }
+.anon-row { display: flex; align-items: center; gap: 8rpx; padding: 12rpx 0; margin-bottom: 12rpx; }
+.anon-label { font-size: 24rpx; color: #888; }
 .like-num-static { font-size: 22rpx; color: #BBB; }
 .fulfill-btn { font-size: 24rpx; color: #FF7B93; font-weight: 600; padding: 4rpx 12rpx; background: #FFF0F3; border-radius: 12rpx; }
 .del-btn { font-size: 24rpx; padding: 4rpx; }
@@ -186,7 +215,7 @@ function doDelete(w) {
 .modal-card { width: 600rpx; background: #FFF; border-radius: 24rpx; padding: 40rpx; }
 .modal-title { font-size: 32rpx; font-weight: 600; text-align: center; display: block; margin-bottom: 20rpx; }
 .fulfill-name { font-size: 26rpx; color: #FF7B93; text-align: center; display: block; margin-bottom: 16rpx; }
-.modal-input { background: #FFF5F7; border-radius: 12rpx; padding: 16rpx 20rpx; font-size: 28rpx; margin-bottom: 16rpx; }
+.modal-input { background: #FFF5F7; border-radius: 12rpx; padding: 16rpx 20rpx; font-size: 28rpx; margin-bottom: 16rpx; width: 100%; box-sizing: border-box; }
 .modal-textarea { background: #FFF5F7; border-radius: 12rpx; padding: 16rpx 20rpx; font-size: 26rpx; height: 120rpx; margin-bottom: 20rpx; width: 100%; box-sizing: border-box; }
 .modal-btns { display: flex; gap: 12rpx; }
 .mbtn { flex: 1; padding: 18rpx; border-radius: 24rpx; font-size: 28rpx; border: none; }
