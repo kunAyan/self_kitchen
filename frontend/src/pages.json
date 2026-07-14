@@ -20,7 +20,8 @@
     { "path": "pages/admin/special-dates/special-dates", "style": { "navigationBarTitleText": "纪念日管理", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }},
     { "path": "pages/admin/today-special/today-special", "style": { "navigationBarTitleText": "今日特供", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }},
     { "path": "pages/admin/sales-stats/sales-stats", "style": { "navigationBarTitleText": "销量统计", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }},
-    { "path": "pages/admin/monthly-report/monthly-report", "style": { "navigationBarTitleText": "月度报告", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }}
+    { "path": "pages/admin/monthly-report/monthly-report", "style": { "navigationBarTitleText": "月度报告", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }},
+    { "path": "pages/wishes/wishes", "style": { "navigationBarTitleText": "许愿池", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }}
   ],
   "globalStyle": {
     "navigationBarBackgroundColor": "#FF7B93",

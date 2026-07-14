@@ -238,7 +238,7 @@ async function saveConfig() {
 <style lang="scss" scoped>
 .store-config-page {
   min-height: 100vh;
-  background: var(--bg-page, #FFF5F7);
+  background: var(--bg-page, var(--bg-page, #FFF5F7));
   padding: 24rpx;
 }
 
@@ -253,7 +253,7 @@ async function saveConfig() {
 }
 
 .form-section {
-  background: var(--bg-card, #FFFFFF);
+  background: var(--bg-card, var(--bg-card, #FFFFFF));
   border-radius: 16rpx;
   padding: 24rpx;
   margin-bottom: 16rpx;
@@ -276,7 +276,7 @@ async function saveConfig() {
 
 .form-input {
   height: 80rpx;
-  background: var(--bg-input, #FFF0F3);
+  background: var(--bg-input, var(--bg-input, #FFF0F3));
   border-radius: 12rpx;
   padding: 0 24rpx;
   font-size: 28rpx;
@@ -284,7 +284,7 @@ async function saveConfig() {
 }
 
 .form-textarea {
-  background: var(--bg-input, #FFF0F3);
+  background: var(--bg-input, var(--bg-input, #FFF0F3));
   border-radius: 12rpx;
   padding: 20rpx 24rpx;
   font-size: 28rpx;
@@ -313,7 +313,7 @@ async function saveConfig() {
 }
 
 .upload-placeholder {
-  background: var(--bg-input, #FFF0F3);
+  background: var(--bg-input, var(--bg-input, #FFF0F3));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -339,15 +339,15 @@ async function saveConfig() {
   align-items: center;
   gap: 16rpx;
   padding: 16rpx;
-  background: var(--bg-input, #FFF0F3);
+  background: var(--bg-input, var(--bg-input, #FFF0F3));
   border-radius: 12rpx;
   border: 2rpx solid transparent;
   transition: all 0.15s;
 }
 
 .dish-checkbox-item.selected {
-  border-color: var(--color-primary, #FF7B93);
-  background: #FFF5F7;
+  border-color: var(--color-primary, var(--color-primary, #FF7B93));
+  background: var(--bg-page, #FFF5F7);
 }
 
 .dc-thumb {
@@ -380,7 +380,7 @@ async function saveConfig() {
 
 .dc-price {
   font-size: 24rpx;
-  color: var(--color-primary, #FF7B93);
+  color: var(--color-primary, var(--color-primary, #FF7B93));
   font-weight: 600;
 }
 
@@ -396,8 +396,8 @@ async function saveConfig() {
 }
 
 .dish-checkbox-item.selected .dc-check {
-  background: var(--color-primary, #FF7B93);
-  border-color: var(--color-primary, #FF7B93);
+  background: var(--color-primary, var(--color-primary, #FF7B93));
+  border-color: var(--color-primary, var(--color-primary, #FF7B93));
 }
 
 .check-mark {
@@ -419,7 +419,7 @@ async function saveConfig() {
 }
 
 .save-btn {
-  background: linear-gradient(135deg, var(--color-primary, #FF7B93), #FFB3C6);
+  background: linear-gradient(135deg, var(--color-primary, var(--color-primary, #FF7B93)), var(--color-primary-light, #FFB3C6));
   color: #FFF;
   font-size: 32rpx;
   font-weight: 600;

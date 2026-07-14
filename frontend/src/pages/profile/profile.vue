@@ -23,18 +23,15 @@
     <view class="links-row">
       <view class="link-item" @click="goStoreIntro"><text class="link-icon">🏪</text><text class="link-text">店铺</text></view>
       <view class="link-item" @click="goOrders"><text class="link-icon">📋</text><text class="link-text">我的订单</text></view>
-      <view class="link-item" @click="showTheme = !showTheme"><text class="link-icon">🎨</text><text class="link-text">换肤</text></view>
       <view class="link-item" @click="goAdmin" v-if="authStore.isAdmin"><text class="link-icon">⚙️</text><text class="link-text">管理</text></view>
     </view>
 
-    <!-- Theme picker -->
-    <view v-if="showTheme" class="card">
-      <text class="card-title">选择主题配色</text>
-      <view class="theme-grid">
-        <view v-for="t in themes" :key="t.name" class="theme-dot" :style="{ background: t.color }" :class="{ active: theme === t.name }" @click="setTheme(t.name)">
-          <text>{{ t.icon }}</text>
-          <text class="theme-label">{{ t.label }}</text>
-        </view>
+    <!-- 许愿池预览 -->
+    <view class="card" @click="goWishes">
+      <view class="preview-row">
+        <view><text class="preview-icon">🌟</text><text class="preview-text">许愿池</text></view>
+        <view><text class="preview-num">{{ wishCount }}</text><text class="preview-sub">个愿望</text></view>
+        <text class="preview-arrow">→</text>
       </view>
     </view>
 
@@ -122,9 +119,8 @@ const uploadBase = UPLOAD_BASE
 const imgBase = uploadBase
 const authStore = useAuthStore()
 const logs = ref([])
-const showTheme = ref(false)
-const theme = ref(uni.getStorageSync('theme') || 'pink')
 const orderStats = ref({ total: 0, thisMonth: 0, totalSpent: '0.00', hasNote: false, hasNightSnack: false, activeDays: 0 })
+const wishCount = ref(0)
 const profileTab = ref('diary')
 const diaryPhotos = ref([])
 const myReviews = ref([])
@@ -152,13 +148,6 @@ const badges = computed(() => {
     { icon: '🎉', name: '里程碑', desc: '累计50单', earned: total >= 50 },
   ]
 })
-
-const themes = [
-  { name: 'pink', color: '#FF7B93', icon: '🌸', label: '樱花粉' },
-  { name: 'blue', color: '#7EC8E3', icon: '🌊', label: '天空蓝' },
-  { name: 'green', color: '#7BC8A4', icon: '🌿', label: '薄荷绿' },
-  { name: 'purple', color: '#B39DDB', icon: '💜', label: '薰衣紫' },
-]
 
 const avatarEmoji = computed(() => {
   if (authStore.isAdmin) return '👨‍🍳'
@@ -194,6 +183,9 @@ onShow(async () => {
       const totalCents = orders.reduce((s, o) => s + (o.total_amount || 0), 0)
       orderStats.value.totalSpent = (totalCents / 100).toFixed(2)
     } catch { /* ignore */ }
+
+    // Wish count
+    try { const wr = await get('/wishes'); wishCount.value = (wr.wishes || []).length } catch {}
 
     // Recent diary photos (last 7 days)
     try {
@@ -239,22 +231,12 @@ function goStoreIntro() { uni.navigateTo({ url: '/pages/store-intro/store-intro'
 function goAdmin() { uni.navigateTo({ url: '/pages/admin/dashboard/dashboard' }) }
 function goOrders() { uni.switchTab({ url: '/pages/orders/orders' }) }
 function goDiary() { uni.switchTab({ url: '/pages/diary/diary' }) }
+function goWishes() { uni.navigateTo({ url: '/pages/wishes/wishes' }) }
 function previewPhoto(p) {
   uni.previewImage({
     urls: diaryPhotos.value.map(pp => imgBase + pp.image_path),
     current: imgBase + p.image_path,
   })
-}
-
-function setTheme(name) {
-  theme.value = name; showTheme.value = false
-  const tc = { pink: { c:'#FF7B93', b:'#FFF5F7' }, blue: { c:'#7EC8E3', b:'#F0F8FB' }, green: { c:'#7BC8A4', b:'#F0F8F2' }, purple: { c:'#B39DDB', b:'#F8F5FB' } }
-  const t = tc[name] || tc.pink
-  uni.setNavigationBarColor({ frontColor: '#ffffff', backgroundColor: t.c })
-  uni.setTabBarStyle({ color: '#999999', selectedColor: t.c, backgroundColor: '#FFFFFF' })
-  uni.setBackgroundColor({ backgroundColor: t.b, backgroundColorTop: t.c, backgroundColorBottom: t.b })
-  uni.setStorageSync('theme', name)
-  uni.showToast({ title: '主题已切换，重启小程序全部生效', icon: 'success' })
 }
 
 async function changeAvatar() {
@@ -279,9 +261,9 @@ function handleLogout() {
 </script>
 
 <style lang="scss" scoped>
-.profile-page { min-height: 100vh; background: #FFF5F7; }
+.profile-page { min-height: 100vh; background: var(--bg-page, #FFF5F7); }
 
-.profile-header { background: linear-gradient(180deg, #FFB3C6, #FFD6DF); padding: 60rpx 32rpx 40rpx; display: flex; flex-direction: column; align-items: center; }
+.profile-header { background: linear-gradient(180deg, var(--color-primary-light, #FFB3C6), #FFD6DF); padding: 60rpx 32rpx 40rpx; display: flex; flex-direction: column; align-items: center; }
 .avatar-area { position: relative; width: 120rpx; height: 120rpx; border-radius: 50%; background: #FFF; display: flex; align-items: center; justify-content: center; margin-bottom: 14rpx; overflow: hidden; box-shadow: 0 4rpx 16rpx rgba(0,0,0,0.1); }
 .avatar-img { width: 100%; height: 100%; }
 .avatar-emoji { font-size: 60rpx; }
@@ -290,7 +272,7 @@ function handleLogout() {
 .username-text { font-size: 22rpx; color: rgba(255,255,255,0.7); margin-top: 4rpx; }
 .role-tag { font-size: 22rpx; color: rgba(255,255,255,0.9); background: rgba(255,255,255,0.2); padding: 4rpx 20rpx; border-radius: 20rpx; margin-top: 10rpx; }
 
-.balance-card { margin: -30rpx 24rpx 16rpx; background: linear-gradient(135deg,#FF7B93,#FFB3C6); color: #FFF; text-align: center; padding: 32rpx; border-radius: 20rpx; box-shadow: 0 8rpx 24rpx rgba(255,123,147,0.3); }
+.balance-card { margin: -30rpx 24rpx 16rpx; background: linear-gradient(135deg,var(--color-primary, #FF7B93),var(--color-primary-light, #FFB3C6)); color: #FFF; text-align: center; padding: 32rpx; border-radius: 20rpx; box-shadow: 0 8rpx 24rpx rgba(255,123,147,0.3); }
 .balance-label { font-size: 22rpx; opacity: 0.85; }
 .balance-amount { font-size: 60rpx; font-weight: 700; display: block; margin-top: 6rpx; }
 .balance-hint { font-size: 20rpx; opacity: 0.7; margin-top: 6rpx; display: block; }
@@ -305,21 +287,21 @@ function handleLogout() {
 
 .theme-grid { display: flex; gap: 16rpx; justify-content: center; }
 .theme-dot { display: flex; flex-direction: column; align-items: center; gap: 6rpx; padding: 16rpx 20rpx; border-radius: 16rpx; }
-.theme-dot.active { background: #FFF0F3; }
+.theme-dot.active { background: var(--bg-input, #FFF0F3); }
 .theme-label { font-size: 20rpx; color: #888; }
 
 .stats-mini { display: flex; gap: 12rpx; }
-.smini-item { flex: 1; background: #FFF5F7; border-radius: 12rpx; padding: 16rpx; text-align: center; }
-.smini-num { font-size: 32rpx; font-weight: 700; color: #FF7B93; display: block; }
+.smini-item { flex: 1; background: var(--bg-page, #FFF5F7); border-radius: 12rpx; padding: 16rpx; text-align: center; }
+.smini-num { font-size: 32rpx; font-weight: 700; color: var(--color-primary, #FF7B93); display: block; }
 .smini-label { font-size: 20rpx; color: #999; margin-top: 2rpx; display: block; }
 
 .tab-row { display: flex; gap: 0; margin-bottom: 18rpx; }
 .tab-item { flex: 1; text-align: center; padding: 14rpx 0; font-size: 26rpx; color: #999; border-bottom: 2rpx solid transparent; }
-.tab-item.active { color: #FF7B93; font-weight: 600; border-bottom-color: #FF7B93; }
+.tab-item.active { color: var(--color-primary, #FF7B93); font-weight: 600; border-bottom-color: var(--color-primary, #FF7B93); }
 
 .photo-grid { display: flex; flex-wrap: wrap; gap: 8rpx; }
 .photo-thumb { width: calc(33.33% - 6rpx); aspect-ratio: 1; border-radius: 8rpx; }
-.view-all { text-align: center; display: block; padding: 16rpx 0 0; font-size: 24rpx; color: #FF7B93; }
+.view-all { text-align: center; display: block; padding: 16rpx 0 0; font-size: 24rpx; color: var(--color-primary, #FF7B93); }
 
 .review-mini { padding: 14rpx 0; border-bottom: 1rpx solid #F5F5F5; }
 .review-mini:last-child { border-bottom: none; }
@@ -327,12 +309,19 @@ function handleLogout() {
 .rm-content { font-size: 24rpx; color: #4A4A4A; display: block; }
 .rm-dish { font-size: 22rpx; color: #BBB; margin-top: 2rpx; display: block; }
 
+.preview-row { display: flex; align-items: center; justify-content: space-between; }
+.preview-icon { font-size: 32rpx; margin-right: 8rpx; }
+.preview-text { font-size: 28rpx; font-weight: 600; color: #4A4A4A; }
+.preview-num { font-size: 36rpx; font-weight: 700; color: #FF7B93; }
+.preview-sub { font-size: 22rpx; color: #999; margin-left: 4rpx; }
+.preview-arrow { font-size: 24rpx; color: #CCC; }
+
 .badge-row { display: flex; flex-wrap: wrap; gap: 12rpx; }
 .badge-item { width: calc(33.33% - 8rpx); background: #F5F5F5; border-radius: 12rpx; padding: 16rpx 12rpx; text-align: center; }
-.badge-item.earned { background: #FFF5F7; border: 1rpx solid #FFD6DF; }
+.badge-item.earned { background: var(--bg-page, #FFF5F7); border: 1rpx solid #FFD6DF; }
 .badge-icon { font-size: 36rpx; display: block; margin-bottom: 4rpx; }
 .badge-name { font-size: 22rpx; font-weight: 600; color: #4A4A4A; display: block; }
-.badge-item.earned .badge-name { color: #FF7B93; }
+.badge-item.earned .badge-name { color: var(--color-primary, #FF7B93); }
 .badge-desc { font-size: 18rpx; color: #CCC; display: block; }
 .badge-item.earned .badge-desc { color: #AAA; }
 

@@ -3,28 +3,9 @@ import { onLaunch, onShow } from '@dcloudio/uni-app'
 import { useAuthStore } from './stores/auth'
 import { API_BASE } from './config'
 
-const themeColors = {
-  pink:   { primary: '#FF7B93', bg: '#FFF5F7', light: '#FFB3C6', dark: '#E06A7E' },
-  blue:   { primary: '#7EC8E3', bg: '#F0F8FB', light: '#B3D9EB', dark: '#5BA8C8' },
-  green:  { primary: '#7BC8A4', bg: '#F0F8F2', light: '#B3D9C4', dark: '#5BA878' },
-  purple: { primary: '#B39DDB', bg: '#F8F5FB', light: '#D1C4E9', dark: '#8E6DB8' },
-}
-
-function applyTheme(name) {
-  const c = themeColors[name] || themeColors.pink
-  uni.setNavigationBarColor({ frontColor: '#ffffff', backgroundColor: c.primary })
-  uni.setTabBarStyle({ color: '#999999', selectedColor: c.primary, backgroundColor: '#FFFFFF' })
-  // Set page background via the page style API
-  uni.setBackgroundColor({ backgroundColor: c.bg, backgroundColorTop: c.primary, backgroundColorBottom: c.bg })
-  // Store for next launch
-  uni.setStorageSync('theme', name)
-}
-
 onLaunch(() => {
   const authStore = useAuthStore()
   authStore.checkLogin()
-  const savedTheme = uni.getStorageSync('theme') || 'pink'
-  applyTheme(savedTheme)
 })
 
 onShow(() => {
@@ -62,17 +43,17 @@ onShow(() => {
 
 <style lang="scss">
 page {
-  --color-primary: #FF7B93;
-  --color-primary-light: #FFB3C6;
-  --color-primary-dark: #E06A7E;
-  --color-primary-bg: #FFF5F7;
+  --color-primary: var(--color-primary, #FF7B93);
+  --color-primary-light: var(--color-primary-light, #FFB3C6);
+  --color-primary-dark: var(--color-primary-dark, #E06A7E);
+  --color-primary-bg: var(--bg-page, #FFF5F7);
   --color-success: #7BC8A4;
   --color-warning: #FFD93D;
   --color-danger: #FF6B6B;
   --color-info: #7EC8E3;
-  --bg-page: #FFF5F7;
-  --bg-card: #FFFFFF;
-  --bg-input: #FFF0F3;
+  --bg-page: var(--bg-page, #FFF5F7);
+  --bg-card: var(--bg-card, #FFFFFF);
+  --bg-input: var(--bg-input, #FFF0F3);
   --text-primary: #4A4A4A;
   --text-secondary: #888888;
   --text-light: #BBBBBB;

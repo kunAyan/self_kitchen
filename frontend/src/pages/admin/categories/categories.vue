@@ -123,7 +123,7 @@ async function deleteCat(cat) {
 <style lang="scss" scoped>
 .admin-categories {
   min-height: 100vh;
-  background: #FFF5F7;
+  background: var(--bg-page, #FFF5F7);
   padding: 24rpx;
 }
 
@@ -141,7 +141,7 @@ async function deleteCat(cat) {
 }
 
 .add-btn {
-  background: linear-gradient(135deg, #FF7B93, #FFB3C6);
+  background: linear-gradient(135deg, var(--color-primary, #FF7B93), var(--color-primary-light, #FFB3C6));
   color: #FFF;
   font-size: 24rpx;
   padding: 12rpx 28rpx;
@@ -229,7 +229,7 @@ async function deleteCat(cat) {
 
 .cute-input {
   height: 80rpx;
-  background: #FFF5F7;
+  background: var(--bg-page, #FFF5F7);
   border-radius: 16rpx;
   padding: 0 24rpx;
   font-size: 28rpx;
@@ -262,8 +262,8 @@ async function deleteCat(cat) {
 }
 
 .emoji-opt.selected {
-  background: #FFF0F3;
-  border: 2rpx solid #FF7B93;
+  background: var(--bg-input, #FFF0F3);
+  border: 2rpx solid var(--color-primary, #FF7B93);
 }
 
 .modal-actions {
@@ -286,7 +286,7 @@ async function deleteCat(cat) {
 }
 
 .modal-btn.confirm {
-  background: linear-gradient(135deg, #FF7B93, #FFB3C6);
+  background: linear-gradient(135deg, var(--color-primary, #FF7B93), var(--color-primary-light, #FFB3C6));
   color: #FFF;
 }
 </style>

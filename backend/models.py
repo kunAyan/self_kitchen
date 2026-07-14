@@ -354,6 +354,32 @@ class TodaySpecial(db.Model):
         }
 
 
+class Wish(db.Model):
+    """Wishing pool - users suggest dishes they want."""
+    __tablename__ = 'wishes'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    title = db.Column(db.String(120), nullable=False)
+    description = db.Column(db.Text, default='')
+    status = db.Column(db.String(20), default='pending')  # pending | fulfilled
+    likes = db.Column(db.Integer, default=0)
+    fulfill_note = db.Column(db.Text, default='')           # admin note on fulfill
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
+
+    user = db.relationship('User', backref='wishes')
+
+    def to_dict(self):
+        return {
+            'id': self.id, 'user_id': self.user_id,
+            'user_nickname': self.user.nickname if self.user else '',
+            'title': self.title, 'description': self.description,
+            'status': self.status, 'likes': self.likes,
+            'fulfill_note': self.fulfill_note,
+            'created_at': self.created_at.isoformat() if self.created_at else None,
+        }
+
+
 class SpecialDate(db.Model):
     """Memorial dates (birthdays, anniversaries, etc)."""
     __tablename__ = 'special_dates'

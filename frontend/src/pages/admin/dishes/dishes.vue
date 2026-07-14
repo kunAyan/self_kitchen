@@ -65,7 +65,7 @@ async function fetchDishes() {
 
 function getColor(dish) {
   const colors = { '🍝': '#FFE4C4', '🥤': '#D4EFFF', '🍰': '#FFE0EC', '🥗': '#E8F8E0', '🍜': '#FFE8D6' }
-  return colors[dish.category_icon] || '#FFF0F3'
+  return colors[dish.category_icon] || 'var(--bg-input, #FFF0F3)'
 }
 
 function goAdd() { uni.navigateTo({ url: '/pages/admin/dish-form/dish-form' }) }
@@ -122,18 +122,18 @@ async function deleteDish(dish) {
 </script>
 
 <style lang="scss" scoped>
-.admin-dishes { min-height: 100vh; background: #FFF5F7; padding: 24rpx 24rpx 120rpx; }
+.admin-dishes { min-height: 100vh; background: var(--bg-page, #FFF5F7); padding: 24rpx 24rpx 120rpx; }
 .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24rpx; flex-wrap: wrap; gap: 12rpx; }
 .page-title { font-size: 32rpx; font-weight: 700; color: #4A4A4A; }
 .header-right { display: flex; align-items: center; gap: 12rpx; }
-.select-count { font-size: 24rpx; color: #FF7B93; font-weight: 600; }
+.select-count { font-size: 24rpx; color: var(--color-primary, #FF7B93); font-weight: 600; }
 .select-all-btn { font-size: 24rpx; color: #7EC8E3; padding: 8rpx 16rpx; }
-.add-btn { background: linear-gradient(135deg, #FF7B93, #FFB3C6); color: #FFF; font-size: 24rpx; padding: 12rpx 28rpx; border-radius: 24rpx; font-weight: 600; }
+.add-btn { background: linear-gradient(135deg, var(--color-primary, #FF7B93), var(--color-primary-light, #FFB3C6)); color: #FFF; font-size: 24rpx; padding: 12rpx 28rpx; border-radius: 24rpx; font-weight: 600; }
 
 .dish-list { background: #FFF; border-radius: 16rpx; overflow: hidden; }
 .dish-row { display: flex; align-items: center; padding: 20rpx; border-bottom: 1rpx solid #F5F5F5; gap: 12rpx; }
 .dish-row:last-child { border-bottom: none; }
-.dish-row.selected { background: #FFF5F7; }
+.dish-row.selected { background: var(--bg-page, #FFF5F7); }
 .dish-check { font-size: 36rpx; padding: 4rpx; flex-shrink: 0; }
 .dish-thumb { width: 70rpx; height: 70rpx; border-radius: 12rpx; display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
 .thumb-img { width: 100%; height: 100%; border-radius: 12rpx; }

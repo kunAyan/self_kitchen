@@ -113,7 +113,7 @@ onMounted(async () => {
 function imgUrl(path) { return `${uploadBase}${path}` }
 function placeholderColor(dish) {
   const colors = { '🍝': '#FFE4C4', '🥤': '#D4EFFF', '🍰': '#FFE0EC', '🥗': '#E8F8E0', '🍜': '#FFE8D6' }
-  return colors[dish.category_icon] || '#FFF0F3'
+  return colors[dish.category_icon] || 'var(--bg-input, #FFF0F3)'
 }
 
 async function submitOrder() {
@@ -137,7 +137,7 @@ async function submitOrder() {
 </script>
 
 <style lang="scss" scoped>
-.cart-page { min-height: 100vh; background: #FFF5F7; padding-bottom: 120rpx; }
+.cart-page { min-height: 100vh; background: var(--bg-page, #FFF5F7); padding-bottom: 120rpx; }
 .cart-list { padding: 16rpx 24rpx; }
 .cart-item { display: flex; align-items: center; background: #FFF; border-radius: 16rpx; padding: 20rpx; margin-bottom: 12rpx; }
 .cart-item-img { width: 100rpx; height: 100rpx; border-radius: 12rpx; display: flex; align-items: center; justify-content: center; overflow: hidden; flex-shrink: 0; }
@@ -145,10 +145,10 @@ async function submitOrder() {
 .cart-placeholder { font-size: 48rpx; }
 .cart-item-info { flex: 1; margin-left: 20rpx; }
 .cart-item-name { font-size: 28rpx; font-weight: 600; color: #4A4A4A; display: block; }
-.cart-item-price { font-size: 26rpx; color: #FF7B93; margin-top: 6rpx; }
+.cart-item-price { font-size: 26rpx; color: var(--color-primary, #FF7B93); margin-top: 6rpx; }
 .qty-stepper { display: flex; align-items: center; gap: 12rpx; }
-.qty-btn { width: 48rpx; height: 48rpx; border-radius: 50%; background: #FFF0F3; display: flex; align-items: center; justify-content: center; }
-.qty-btn text { font-size: 32rpx; color: #FF7B93; font-weight: 600; }
+.qty-btn { width: 48rpx; height: 48rpx; border-radius: 50%; background: var(--bg-input, #FFF0F3); display: flex; align-items: center; justify-content: center; }
+.qty-btn text { font-size: 32rpx; color: var(--color-primary, #FF7B93); font-weight: 600; }
 .qty-num { font-size: 28rpx; font-weight: 600; min-width: 40rpx; text-align: center; }
 
 .options-card { background: #FFF; margin: 16rpx 24rpx; border-radius: 16rpx; padding: 24rpx; }
@@ -157,14 +157,14 @@ async function submitOrder() {
 .opt-label { font-size: 26rpx; font-weight: 600; color: #4A4A4A; display: block; margin-bottom: 12rpx; }
 .opt-chips { display: flex; flex-wrap: wrap; gap: 12rpx; }
 .chip { padding: 10rpx 24rpx; border-radius: 20rpx; background: #F5F5F5; font-size: 24rpx; color: #888; }
-.chip.active { background: #FFF0F3; color: #FF7B93; font-weight: 600; border: 2rpx solid #FF7B93; }
+.chip.active { background: var(--bg-input, #FFF0F3); color: var(--color-primary, #FF7B93); font-weight: 600; border: 2rpx solid var(--color-primary, #FF7B93); }
 
 .note-section { padding: 16rpx 24rpx; }
 .note-input { height: 80rpx; background: #FFF; border-radius: 16rpx; padding: 0 24rpx; font-size: 26rpx; }
 
 .submit-bar { position: fixed; bottom: 0; left: 0; right: 0; background: #FFF; padding: 20rpx 32rpx; padding-bottom: calc(20rpx + env(safe-area-inset-bottom)); box-shadow: 0 -2rpx 12rpx rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between; }
 .submit-label { font-size: 24rpx; color: #999; }
-.submit-total { font-size: 40rpx; font-weight: 700; color: #FF7B93; }
-.submit-btn { background: linear-gradient(135deg, #FF7B93, #FFB3C6); color: #FFF; font-size: 30rpx; font-weight: 600; border-radius: 24rpx; padding: 16rpx 40rpx; border: none; box-shadow: 0 4rpx 16rpx rgba(255,123,147,0.3); }
+.submit-total { font-size: 40rpx; font-weight: 700; color: var(--color-primary, #FF7B93); }
+.submit-btn { background: linear-gradient(135deg, var(--color-primary, #FF7B93), var(--color-primary-light, #FFB3C6)); color: #FFF; font-size: 30rpx; font-weight: 600; border-radius: 24rpx; padding: 16rpx 40rpx; border: none; box-shadow: 0 4rpx 16rpx rgba(255,123,147,0.3); }
 .submit-btn.disabled { background: #DDD; color: #999; box-shadow: none; font-size: 24rpx; }
 </style>

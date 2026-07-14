@@ -18,7 +18,7 @@
         class="image-swiper"
         :indicator-dots="imageList.length > 1"
         indicator-color="rgba(255,255,255,0.4)"
-        indicator-active-color="#FF7B93"
+        indicator-active-color="var(--color-primary, #FF7B93)"
         autoplay
         interval="4000"
         circular
@@ -218,8 +218,8 @@ const placeholderColors = {
   '✨': '#F5F0FF',
 }
 const placeholderBg = computed(() => {
-  if (!dish.value) return '#FFF0F3'
-  return placeholderColors[dish.value.category_icon] || '#FFF0F3'
+  if (!dish.value) return 'var(--bg-input, #FFF0F3)'
+  return placeholderColors[dish.value.category_icon] || 'var(--bg-input, #FFF0F3)'
 })
 
 // Build image list from dish.images (array) or dish.image (string)
@@ -369,7 +369,7 @@ onLoad((options) => {
 <style lang="scss" scoped>
 .detail-page {
   min-height: 100vh;
-  background: #FFF5F7;
+  background: var(--bg-page, #FFF5F7);
   padding-bottom: 40rpx;
 }
 
@@ -391,7 +391,7 @@ onLoad((options) => {
 .back-btn {
   margin-top: 24rpx;
   padding: 16rpx 48rpx;
-  background: linear-gradient(135deg, #FF7B93, #FFB3C6);
+  background: linear-gradient(135deg, var(--color-primary, #FF7B93), var(--color-primary-light, #FFB3C6));
   border-radius: 40rpx;
   color: #FFF;
   font-size: 28rpx;
@@ -411,7 +411,7 @@ onLoad((options) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #FFF0F3;
+  background: var(--bg-input, #FFF0F3);
 }
 
 .swiper-image {
@@ -433,7 +433,7 @@ onLoad((options) => {
 
 /* Info Section */
 .info-section {
-  background: #FFFFFF;
+  background: var(--bg-card, #FFFFFF);
   border-radius: 24rpx 24rpx 0 0;
   margin-top: -24rpx;
   padding: 32rpx;
@@ -455,7 +455,7 @@ onLoad((options) => {
 }
 
 .fav-btn { text-align: center; padding: 16rpx; margin: 0 24rpx; border-radius: 12rpx; background: #FFF; font-size: 26rpx; }
-.fav-btn.favorited { background: #FFF0F3; color: #FF7B93; }
+.fav-btn.favorited { background: var(--bg-input, #FFF0F3); color: var(--color-primary, #FF7B93); }
 .sold-out-badge {
   padding: 6rpx 20rpx;
   background: #F0F0F0;
@@ -475,7 +475,7 @@ onLoad((options) => {
 .dish-price {
   font-size: 40rpx;
   font-weight: 800;
-  color: #FF7B93;
+  color: var(--color-primary, #FF7B93);
 }
 
 .dish-sold {
@@ -506,7 +506,7 @@ onLoad((options) => {
 .dish-desc {
   margin-top: 24rpx;
   padding: 20rpx;
-  background: #FFF5F7;
+  background: var(--bg-page, #FFF5F7);
   border-radius: 12rpx;
 }
 
@@ -526,7 +526,7 @@ onLoad((options) => {
 
 /* Cart Section */
 .cart-section {
-  background: #FFFFFF;
+  background: var(--bg-card, #FFFFFF);
   margin-top: 16rpx;
   padding: 32rpx;
   border-radius: 24rpx;
@@ -549,7 +549,7 @@ onLoad((options) => {
   display: flex;
   align-items: center;
   gap: 0;
-  background: #FFF5F7;
+  background: var(--bg-page, #FFF5F7);
   border-radius: 32rpx;
   overflow: hidden;
 }
@@ -560,8 +560,8 @@ onLoad((options) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #FF7B93;
-  color: #FFFFFF;
+  background: var(--color-primary, #FF7B93);
+  color: var(--bg-card, #FFFFFF);
   font-size: 32rpx;
   font-weight: 700;
   transition: opacity 0.2s;
@@ -590,7 +590,7 @@ onLoad((options) => {
   justify-content: center;
   gap: 16rpx;
   height: 88rpx;
-  background: linear-gradient(135deg, #FF7B93, #FFB3C6);
+  background: linear-gradient(135deg, var(--color-primary, #FF7B93), var(--color-primary-light, #FFB3C6));
   border-radius: 44rpx;
   box-shadow: 0 4rpx 20rpx rgba(255, 123, 147, 0.35);
 }
@@ -600,7 +600,7 @@ onLoad((options) => {
 }
 
 .add-cart-text {
-  color: #FFFFFF;
+  color: var(--bg-card, #FFFFFF);
   font-size: 32rpx;
   font-weight: 700;
 }
@@ -613,7 +613,7 @@ onLoad((options) => {
 
 /* Reviews Section */
 .reviews-section {
-  background: #FFFFFF;
+  background: var(--bg-card, #FFFFFF);
   margin-top: 16rpx;
   padding: 32rpx;
   border-radius: 24rpx;
@@ -657,14 +657,14 @@ onLoad((options) => {
 
 .avg-score {
   font-size: 24rpx;
-  color: #FF7B93;
+  color: var(--color-primary, #FF7B93);
   font-weight: 700;
   margin-left: 4rpx;
 }
 
 .write-review-btn {
   padding: 12rpx 28rpx;
-  background: linear-gradient(135deg, #FF7B93, #FFB3C6);
+  background: linear-gradient(135deg, var(--color-primary, #FF7B93), var(--color-primary-light, #FFB3C6));
   border-radius: 28rpx;
 }
 
@@ -673,7 +673,7 @@ onLoad((options) => {
 }
 
 .write-review-text {
-  color: #FFFFFF;
+  color: var(--bg-card, #FFFFFF);
   font-size: 24rpx;
   font-weight: 600;
 }
@@ -688,7 +688,7 @@ onLoad((options) => {
 /* Review List */
 .review-item {
   padding: 24rpx 0;
-  border-bottom: 1rpx solid #FFF0F3;
+  border-bottom: 1rpx solid var(--bg-input, #FFF0F3);
 }
 
 .review-item:last-child {
@@ -705,7 +705,7 @@ onLoad((options) => {
   width: 56rpx;
   height: 56rpx;
   border-radius: 50%;
-  background: linear-gradient(135deg, #FFB3C6, #FFD6E0);
+  background: linear-gradient(135deg, var(--color-primary-light, #FFB3C6), #FFD6E0);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -713,7 +713,7 @@ onLoad((options) => {
 
 .review-avatar text {
   font-size: 24rpx;
-  color: #FFFFFF;
+  color: var(--bg-card, #FFFFFF);
   font-weight: 700;
 }
 
@@ -766,7 +766,7 @@ onLoad((options) => {
 
 .modal-content {
   width: 100%;
-  background: #FFFFFF;
+  background: var(--bg-card, #FFFFFF);
   border-radius: 32rpx 32rpx 0 0;
   padding: 40rpx 32rpx;
   padding-bottom: calc(40rpx + env(safe-area-inset-bottom));
@@ -821,7 +821,7 @@ onLoad((options) => {
 .review-textarea {
   width: 100%;
   height: 200rpx;
-  background: #FFF5F7;
+  background: var(--bg-page, #FFF5F7);
   border-radius: 16rpx;
   padding: 20rpx;
   font-size: 28rpx;
@@ -860,13 +860,13 @@ onLoad((options) => {
 }
 
 .cancel-btn {
-  background: #FFF0F3;
-  color: #FF7B93;
+  background: var(--bg-input, #FFF0F3);
+  color: var(--color-primary, #FF7B93);
 }
 
 .submit-btn {
-  background: linear-gradient(135deg, #FF7B93, #FFB3C6);
-  color: #FFFFFF;
+  background: linear-gradient(135deg, var(--color-primary, #FF7B93), var(--color-primary-light, #FFB3C6));
+  color: var(--bg-card, #FFFFFF);
   box-shadow: 0 4rpx 16rpx rgba(255, 123, 147, 0.3);
 }
 

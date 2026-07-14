@@ -1,7 +1,7 @@
 /* uni-app global SCSS variables */
-$uni-color-primary: #FF7B93;
+$uni-color-primary: var(--color-primary, #FF7B93);
 $uni-color-success: #7BC8A4;
 $uni-color-warning: #FFD93D;
 $uni-color-error: #FF6B6B;
-$uni-bg-color: #FFF5F7;
+$uni-bg-color: var(--bg-page, #FFF5F7);
 $uni-text-color: #4A4A4A;

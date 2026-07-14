@@ -61,7 +61,7 @@
     <!-- Available -->
     <view class="form-section">
       <text class="form-label">上架状态</text>
-      <switch :checked="form.is_available" @change="form.is_available = $event.detail.value" color="#FF7B93" />
+      <switch :checked="form.is_available" @change="form.is_available = $event.detail.value" color="var(--color-primary, #FF7B93)" />
     </view>
 
     <!-- Submit -->
@@ -204,7 +204,7 @@ async function save() {
 <style lang="scss" scoped>
 .dish-form-page {
   min-height: 100vh;
-  background: #FFF5F7;
+  background: var(--bg-page, #FFF5F7);
   padding: 24rpx;
 }
 
@@ -250,7 +250,7 @@ async function save() {
 }
 
 .upload-placeholder {
-  background: #FFF0F3;
+  background: var(--bg-input, #FFF0F3);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -269,7 +269,7 @@ async function save() {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #FFF5F7;
+  background: var(--bg-page, #FFF5F7);
   border-radius: 12rpx;
   padding: 20rpx 24rpx;
   font-size: 28rpx;
@@ -282,14 +282,14 @@ async function save() {
 
 .form-input {
   height: 80rpx;
-  background: #FFF5F7;
+  background: var(--bg-page, #FFF5F7);
   border-radius: 12rpx;
   padding: 0 24rpx;
   font-size: 28rpx;
 }
 
 .form-textarea {
-  background: #FFF5F7;
+  background: var(--bg-page, #FFF5F7);
   border-radius: 12rpx;
   padding: 20rpx 24rpx;
   font-size: 28rpx;
@@ -304,7 +304,7 @@ async function save() {
 .form-hint { font-size: 20rpx; color: #CCC; margin-top: 6rpx; display: block; }
 
 .save-btn {
-  background: linear-gradient(135deg, #FF7B93, #FFB3C6);
+  background: linear-gradient(135deg, var(--color-primary, #FF7B93), var(--color-primary-light, #FFB3C6));
   color: #FFF;
   font-size: 32rpx;
   font-weight: 600;

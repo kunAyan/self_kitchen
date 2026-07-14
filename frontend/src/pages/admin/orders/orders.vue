@@ -110,7 +110,7 @@ function formatTime(isoStr) {
 <style lang="scss" scoped>
 .admin-orders {
   min-height: 100vh;
-  background: #FFF5F7;
+  background: var(--bg-page, #FFF5F7);
   padding: 24rpx;
 }
 
@@ -141,9 +141,9 @@ function formatTime(isoStr) {
 }
 
 .filter-tab.active {
-  color: #FF7B93;
+  color: var(--color-primary, #FF7B93);
   font-weight: 600;
-  background: #FFF0F3;
+  background: var(--bg-input, #FFF0F3);
 }
 
 .order-list {
@@ -180,7 +180,7 @@ function formatTime(isoStr) {
 .order-amount {
   font-size: 32rpx;
   font-weight: 700;
-  color: #FF7B93;
+  color: var(--color-primary, #FF7B93);
 }
 
 .order-meta {
@@ -195,7 +195,7 @@ function formatTime(isoStr) {
 }
 
 .order-note {
-  background: #FFF5F7;
+  background: var(--bg-page, #FFF5F7);
   padding: 12rpx 16rpx;
   border-radius: 8rpx;
   margin-bottom: 16rpx;

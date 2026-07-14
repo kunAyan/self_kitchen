@@ -85,7 +85,7 @@ async function handleLogin() {
 <style lang="scss" scoped>
 .login-page {
   min-height: 100vh;
-  background: linear-gradient(180deg, #FFB3C6 0%, #FFF5F7 40%, #FFFFFF 100%);
+  background: linear-gradient(180deg, var(--color-primary-light, #FFB3C6) 0%, var(--bg-page, #FFF5F7) 40%, var(--bg-card, #FFFFFF) 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -114,7 +114,7 @@ async function handleLogin() {
 .logo-text {
   font-size: 52rpx;
   font-weight: 700;
-  color: var(--color-primary, #FF7B93);
+  color: var(--color-primary, var(--color-primary, #FF7B93));
   margin-bottom: 16rpx;
   letter-spacing: 4rpx;
 }
@@ -128,7 +128,7 @@ async function handleLogin() {
 .login-card {
   width: 100%;
   max-width: 600rpx;
-  background: var(--bg-card, #FFFFFF);
+  background: var(--bg-card, var(--bg-card, #FFFFFF));
   border-radius: var(--radius-xl, 28rpx);
   padding: 56rpx 44rpx;
   box-shadow: 0 4rpx 24rpx rgba(255, 123, 147, 0.15);
@@ -142,7 +142,7 @@ async function handleLogin() {
 
 .cute-input {
   height: 96rpx;
-  background: #FFF5F7;
+  background: var(--bg-page, #FFF5F7);
   border-radius: 48rpx;
   padding: 0 36rpx;
   font-size: 28rpx;
@@ -153,13 +153,13 @@ async function handleLogin() {
 }
 
 .cute-input:focus {
-  border-color: #FF7B93;
+  border-color: var(--color-primary, #FF7B93);
 }
 
 .cute-btn {
   height: 96rpx;
-  background: linear-gradient(135deg, #FF7B93, #FFB3C6);
-  color: #FFFFFF;
+  background: linear-gradient(135deg, var(--color-primary, #FF7B93), var(--color-primary-light, #FFB3C6));
+  color: var(--bg-card, #FFFFFF);
   font-size: 34rpx;
   font-weight: 700;
   border-radius: 48rpx;

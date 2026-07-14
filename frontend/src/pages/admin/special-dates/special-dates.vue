@@ -70,7 +70,7 @@
           <switch
             :checked="form.repeat_yearly"
             @change="form.repeat_yearly = $event.detail.value"
-            color="#FF7B93"
+            color="var(--color-primary, #FF7B93)"
           />
         </view>
 
@@ -209,7 +209,7 @@ function confirmDelete(item) {
 <style lang="scss" scoped>
 .special-dates-page {
   min-height: 100vh;
-  background: var(--bg-page, #FFF5F7);
+  background: var(--bg-page, var(--bg-page, #FFF5F7));
   padding: 24rpx;
 }
 
@@ -227,7 +227,7 @@ function confirmDelete(item) {
 }
 
 .add-btn {
-  background: linear-gradient(135deg, var(--color-primary, #FF7B93), #FFB3C6);
+  background: linear-gradient(135deg, var(--color-primary, var(--color-primary, #FF7B93)), var(--color-primary-light, #FFB3C6));
   color: #FFF;
   font-size: 24rpx;
   padding: 12rpx 28rpx;
@@ -236,7 +236,7 @@ function confirmDelete(item) {
 }
 
 .date-list {
-  background: var(--bg-card, #FFFFFF);
+  background: var(--bg-card, var(--bg-card, #FFFFFF));
   border-radius: 16rpx;
   overflow: hidden;
 }
@@ -277,8 +277,8 @@ function confirmDelete(item) {
 
 .repeat-badge {
   font-size: 20rpx;
-  color: var(--color-primary, #FF7B93);
-  background: #FFF0F3;
+  color: var(--color-primary, var(--color-primary, #FF7B93));
+  background: var(--bg-input, #FFF0F3);
   padding: 2rpx 12rpx;
   border-radius: 12rpx;
   font-weight: 500;
@@ -332,7 +332,7 @@ function confirmDelete(item) {
 
 .cute-input {
   height: 80rpx;
-  background: var(--bg-input, #FFF0F3);
+  background: var(--bg-input, var(--bg-input, #FFF0F3));
   border-radius: 16rpx;
   padding: 0 24rpx;
   font-size: 28rpx;
@@ -369,8 +369,8 @@ function confirmDelete(item) {
 }
 
 .emoji-opt.selected {
-  background: #FFF0F3;
-  border: 2rpx solid var(--color-primary, #FF7B93);
+  background: var(--bg-input, #FFF0F3);
+  border: 2rpx solid var(--color-primary, var(--color-primary, #FF7B93));
 }
 
 .toggle-section {
@@ -400,7 +400,7 @@ function confirmDelete(item) {
 }
 
 .modal-btn.confirm {
-  background: linear-gradient(135deg, var(--color-primary, #FF7B93), #FFB3C6);
+  background: linear-gradient(135deg, var(--color-primary, var(--color-primary, #FF7B93)), var(--color-primary-light, #FFB3C6));
   color: #FFF;
 }
 </style>

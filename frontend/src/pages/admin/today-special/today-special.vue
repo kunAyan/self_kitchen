@@ -163,7 +163,7 @@ async function clearSpecial() {
 <style lang="scss" scoped>
 .today-special-page {
   min-height: 100vh;
-  background: var(--bg-page, #FFF5F7);
+  background: var(--bg-page, var(--bg-page, #FFF5F7));
   padding: 24rpx;
 }
 
@@ -183,8 +183,8 @@ async function clearSpecial() {
 }
 
 .current-card {
-  background: linear-gradient(135deg, #FFF0F3, #FFFFFF);
-  border: 2rpx solid var(--color-primary, #FF7B93);
+  background: linear-gradient(135deg, var(--bg-input, #FFF0F3), var(--bg-card, #FFFFFF));
+  border: 2rpx solid var(--color-primary, var(--color-primary, #FF7B93));
   border-radius: 16rpx;
   padding: 24rpx;
 }
@@ -192,7 +192,7 @@ async function clearSpecial() {
 .current-label {
   font-size: 24rpx;
   font-weight: 600;
-  color: var(--color-primary, #FF7B93);
+  color: var(--color-primary, var(--color-primary, #FF7B93));
   display: block;
   margin-bottom: 16rpx;
 }
@@ -238,14 +238,14 @@ async function clearSpecial() {
 
 .cd-price {
   font-size: 24rpx;
-  color: var(--color-primary, #FF7B93);
+  color: var(--color-primary, var(--color-primary, #FF7B93));
   font-weight: 600;
 }
 
 .cd-badge {
   font-size: 20rpx;
   color: #FFF;
-  background: var(--color-primary, #FF7B93);
+  background: var(--color-primary, var(--color-primary, #FF7B93));
   padding: 4rpx 16rpx;
   border-radius: 20rpx;
   font-weight: 500;
@@ -254,12 +254,12 @@ async function clearSpecial() {
 .clear-btn {
   width: 100%;
   background: #FFF;
-  color: var(--color-primary, #FF7B93);
+  color: var(--color-primary, var(--color-primary, #FF7B93));
   font-size: 26rpx;
   font-weight: 500;
   border-radius: 16rpx;
   padding: 16rpx;
-  border: 2rpx solid var(--color-primary, #FF7B93);
+  border: 2rpx solid var(--color-primary, var(--color-primary, #FF7B93));
 }
 
 /* Search */
@@ -269,7 +269,7 @@ async function clearSpecial() {
 
 .search-input {
   height: 72rpx;
-  background: var(--bg-card, #FFFFFF);
+  background: var(--bg-card, var(--bg-card, #FFFFFF));
   border-radius: 36rpx;
   padding: 0 28rpx;
   font-size: 26rpx;
@@ -288,7 +288,7 @@ async function clearSpecial() {
   display: flex;
   align-items: center;
   padding: 20rpx;
-  background: var(--bg-card, #FFFFFF);
+  background: var(--bg-card, var(--bg-card, #FFFFFF));
   border-radius: 16rpx;
   gap: 16rpx;
   box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
@@ -300,7 +300,7 @@ async function clearSpecial() {
 }
 
 .dish-card.isCurrent {
-  border: 2rpx solid var(--color-primary, #FF7B93);
+  border: 2rpx solid var(--color-primary, var(--color-primary, #FF7B93));
   background: #FFF8FA;
 }
 
@@ -312,7 +312,7 @@ async function clearSpecial() {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #FFF0F3;
+  background: var(--bg-input, #FFF0F3);
   flex-shrink: 0;
 }
 
@@ -354,7 +354,7 @@ async function clearSpecial() {
 
 .dish-price {
   font-size: 24rpx;
-  color: var(--color-primary, #FF7B93);
+  color: var(--color-primary, var(--color-primary, #FF7B93));
   font-weight: 600;
 }
 
@@ -367,7 +367,7 @@ async function clearSpecial() {
 }
 
 .special-badge {
-  background: var(--color-primary, #FF7B93);
+  background: var(--color-primary, var(--color-primary, #FF7B93));
   border-radius: 12rpx;
   padding: 2rpx 10rpx;
 }
@@ -380,12 +380,12 @@ async function clearSpecial() {
 
 .selected-icon {
   font-size: 28rpx;
-  color: var(--color-primary, #FF7B93);
+  color: var(--color-primary, var(--color-primary, #FF7B93));
 }
 
 .select-hint {
   font-size: 20rpx;
-  color: var(--color-primary, #FF7B93);
+  color: var(--color-primary, var(--color-primary, #FF7B93));
   font-weight: 500;
 }
 

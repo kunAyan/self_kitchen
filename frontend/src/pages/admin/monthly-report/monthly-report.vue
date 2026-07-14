@@ -158,7 +158,7 @@ function generateReport() {
 <style lang="scss" scoped>
 .monthly-report-page {
   min-height: 100vh;
-  background: #FFF5F7;
+  background: var(--bg-page, #FFF5F7);
   padding: 24rpx;
 }
 
@@ -167,7 +167,7 @@ function generateReport() {
   text-align: center;
   margin-bottom: 28rpx;
   padding: 30rpx 0;
-  background: linear-gradient(135deg, #FF7B93, #FF9AAE);
+  background: linear-gradient(135deg, var(--color-primary, #FF7B93), #FF9AAE);
   border-radius: 20rpx;
   box-shadow: 0 4rpx 16rpx rgba(255, 123, 147, 0.3);
 }
@@ -212,7 +212,7 @@ function generateReport() {
 .stat-num {
   font-size: 38rpx;
   font-weight: 700;
-  color: #FF7B93;
+  color: var(--color-primary, #FF7B93);
   display: block;
 }
 
@@ -234,7 +234,7 @@ function generateReport() {
 }
 
 .top-dish-card {
-  border-top: 6rpx solid #FF7B93;
+  border-top: 6rpx solid var(--color-primary, #FF7B93);
 }
 
 .top-chef-card {
@@ -267,7 +267,7 @@ function generateReport() {
 .highlight-item-name {
   font-size: 36rpx;
   font-weight: 700;
-  color: #FF7B93;
+  color: var(--color-primary, #FF7B93);
 }
 
 .highlight-item-count {
@@ -288,7 +288,7 @@ function generateReport() {
 
 .generate-btn {
   width: 100%;
-  background: linear-gradient(135deg, #FF7B93, #FF9AAE);
+  background: linear-gradient(135deg, var(--color-primary, #FF7B93), #FF9AAE);
   border: none;
   border-radius: 48rpx;
   padding: 24rpx;
@@ -343,7 +343,7 @@ function generateReport() {
 .modal-title {
   font-size: 34rpx;
   font-weight: 700;
-  color: #FF7B93;
+  color: var(--color-primary, #FF7B93);
 }
 
 .modal-body {
@@ -381,7 +381,7 @@ function generateReport() {
 
 .modal-close {
   font-size: 28rpx;
-  color: #FF7B93;
+  color: var(--color-primary, #FF7B93);
   font-weight: 600;
   padding: 12rpx 40rpx;
 }

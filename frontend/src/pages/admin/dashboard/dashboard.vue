@@ -56,13 +56,13 @@ function goUser(id) { uni.navigateTo({ url: `/pages/admin/user/user?id=${id}` })
 </script>
 
 <style lang="scss" scoped>
-.admin-dashboard { min-height: 100vh; background: #FFF5F7; padding: 24rpx; }
+.admin-dashboard { min-height: 100vh; background: var(--bg-page, #FFF5F7); padding: 24rpx; }
 .dash-header { margin-bottom: 20rpx; }
 .dash-title { font-size: 32rpx; font-weight: 700; color: #4A4A4A; }
 .stats-grid { display: flex; gap: 12rpx; margin-bottom: 16rpx; }
 .stat-card { flex: 1; background: #FFF; border-radius: 16rpx; padding: 24rpx 16rpx; text-align: center; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04); }
 .stat-icon { font-size: 36rpx; display: block; margin-bottom: 6rpx; }
-.stat-num { font-size: 36rpx; font-weight: 700; color: #FF7B93; display: block; }
+.stat-num { font-size: 36rpx; font-weight: 700; color: var(--color-primary, #FF7B93); display: block; }
 .stat-label { font-size: 20rpx; color: #999; margin-top: 4rpx; }
 .card { background: #FFF; border-radius: 16rpx; padding: 24rpx; margin-bottom: 16rpx; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04); }
 .card-title { font-size: 26rpx; font-weight: 600; color: #4A4A4A; display: block; margin-bottom: 16rpx; }
@@ -72,10 +72,10 @@ function goUser(id) { uni.navigateTo({ url: `/pages/admin/user/user?id=${id}` })
 .cust-info { flex: 1; }
 .cust-name { font-size: 28rpx; font-weight: 600; display: block; }
 .cust-user { font-size: 22rpx; color: #AAA; }
-.cust-balance { font-size: 28rpx; font-weight: 700; color: #FF7B93; margin-right: 8rpx; }
+.cust-balance { font-size: 28rpx; font-weight: 700; color: var(--color-primary, #FF7B93); margin-right: 8rpx; }
 .cust-arrow { color: #CCC; }
 .action-grid { display: flex; flex-wrap: wrap; gap: 12rpx; }
-.action-item { width: calc(33.33% - 8rpx); background: #FFF5F7; border-radius: 12rpx; padding: 20rpx; text-align: center; font-size: 24rpx; color: #4A4A4A; }
+.action-item { width: calc(33.33% - 8rpx); background: var(--bg-page, #FFF5F7); border-radius: 12rpx; padding: 20rpx; text-align: center; font-size: 24rpx; color: #4A4A4A; }
 .act-icon { font-size: 36rpx; display: block; margin-bottom: 6rpx; }
 .action-item:active { background: #FFE0E6; }
 </style>

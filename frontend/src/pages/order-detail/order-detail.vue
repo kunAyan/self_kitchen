@@ -18,7 +18,7 @@
       <view class="info-row" v-if="order.meal_type"><text class="info-label">餐段</text><text class="info-value">{{ mealLabel(order.meal_type) }}</text></view>
       <view class="info-row" v-if="order.placed_by_nickname"><text class="info-label">代下单</text><text class="info-value">{{ order.placed_by_nickname }} 代点</text></view>
       <view class="info-row" v-if="order.estimated_time"><text class="info-label">预计出餐</text><text class="info-value" style="color:#7EC8E3">⏱ {{ fmt(order.estimated_time) }}</text></view>
-      <view class="info-row" v-if="order.note"><text class="info-label">备注</text><text class="info-value" style="color:#FF7B93">{{ order.note }}</text></view>
+      <view class="info-row" v-if="order.note"><text class="info-label">备注</text><text class="info-value" style="color:var(--color-primary, #FF7B93)">{{ order.note }}</text></view>
     </view>
 
     <!-- Items -->
@@ -175,16 +175,16 @@ async function saveMood() {
 </script>
 
 <style lang="scss" scoped>
-.detail-page { min-height: 100vh; background: #FFF5F7; padding: 16rpx 0; }
+.detail-page { min-height: 100vh; background: var(--bg-page, #FFF5F7); padding: 16rpx 0; }
 .card { background: #FFF; border-radius: 16rpx; padding: 24rpx; margin: 16rpx 24rpx; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04); }
 .timeline { padding: 8rpx 0; }
 .tl-item { display: flex; align-items: flex-start; padding-left: 40rpx; position: relative; padding-bottom: 32rpx; }
 .tl-item:last-child { padding-bottom: 0; }
 .tl-item::before { content:''; position:absolute; left:16rpx; top:32rpx; bottom:0; width:2rpx; background:#EEE; }
 .tl-item:last-child::before { display:none; }
-.tl-item.done::before { background:#FF7B93; }
+.tl-item.done::before { background:var(--color-primary, #FF7B93); }
 .tl-dot { position:absolute; left:8rpx; top:4rpx; width:18rpx; height:18rpx; border-radius:50%; background:#EEE; border:3rpx solid #FFF; z-index:1; }
-.tl-item.done .tl-dot { background:#FF7B93; }
+.tl-item.done .tl-dot { background:var(--color-primary, #FF7B93); }
 .tl-item.rejected .tl-dot { background:#FF6B6B; }
 .tl-info { margin-left:12rpx; }
 .tl-title { font-size:28rpx; font-weight:600; color:#CCC; }
@@ -199,12 +199,12 @@ async function saveMood() {
 .oi-name { font-size:26rpx; color:#4A4A4A; }
 .oi-price { font-size:22rpx; color:#AAA; }
 .oi-qty { font-size:26rpx; color:#888; }
-.oi-sub { font-size:24rpx; font-weight:600; color:#FF7B93; }
+.oi-sub { font-size:24rpx; font-weight:600; color:var(--color-primary, #FF7B93); }
 .divider { height:1rpx; background:#F0F0F0; margin:16rpx 0; }
 .total-row { display:flex; justify-content:space-between; }
 .total-label { font-size:28rpx; font-weight:600; }
-.total-amount { font-size:36rpx; font-weight:700; color:#FF7B93; }
-.mood-card { text-align:center; font-size:28rpx; color:#FF7B93; padding:28rpx; }
+.total-amount { font-size:36rpx; font-weight:700; color:var(--color-primary, #FF7B93); }
+.mood-card { text-align:center; font-size:28rpx; color:var(--color-primary, #FF7B93); padding:28rpx; }
 .mood-display { display:flex; align-items:center; gap:12rpx; }
 .mood-emoji { font-size:48rpx; }
 .mood-text { font-size:26rpx; color:#888; }
@@ -212,13 +212,13 @@ async function saveMood() {
 .reorder-btn { background: linear-gradient(135deg,#7EC8E3,#9BD5EB); color:#FFF; border:none; border-radius:24rpx; font-size:28rpx; padding:16rpx; margin-bottom:8rpx; }
 .cancel-btn { background:#FFF; color:#FF6B6B; border:2rpx solid #FF6B6B; border-radius:24rpx; font-size:28rpx; padding:16rpx; }
 .ingredient-tags { display: flex; flex-wrap: wrap; gap: 10rpx; }
-.ing-tag { background: #FFF5F7; color: #FF7B93; font-size: 22rpx; padding: 6rpx 16rpx; border-radius: 16rpx; border: 1rpx solid #FFD6DF; }
+.ing-tag { background: var(--bg-page, #FFF5F7); color: var(--color-primary, #FF7B93); font-size: 22rpx; padding: 6rpx 16rpx; border-radius: 16rpx; border: 1rpx solid #FFD6DF; }
 .modal-overlay { position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; z-index:100; }
 .modal-card { width:560rpx; background:#FFF; border-radius:24rpx; padding:40rpx; }
 .modal-title { font-size:32rpx; font-weight:600; text-align:center; display:block; margin-bottom:24rpx; }
 .emoji-options { display:flex; justify-content:center; gap:24rpx; margin-bottom:24rpx; }
 .emoji-opt { font-size:60rpx; padding:8rpx; border-radius:12rpx; }
-.emoji-opt.selected { background:#FFF0F3; border:2rpx solid #FF7B93; }
-.mood-input { background:#FFF5F7; border-radius:12rpx; padding:16rpx 20rpx; font-size:26rpx; margin-bottom:20rpx; }
-.mood-btn { background:linear-gradient(135deg,#FF7B93,#FFB3C6); color:#FFF; border-radius:24rpx; font-size:28rpx; padding:20rpx; border:none; }
+.emoji-opt.selected { background:var(--bg-input, #FFF0F3); border:2rpx solid var(--color-primary, #FF7B93); }
+.mood-input { background:var(--bg-page, #FFF5F7); border-radius:12rpx; padding:16rpx 20rpx; font-size:26rpx; margin-bottom:20rpx; }
+.mood-btn { background:linear-gradient(135deg,var(--color-primary, #FF7B93),var(--color-primary-light, #FFB3C6)); color:#FFF; border-radius:24rpx; font-size:28rpx; padding:20rpx; border:none; }
 </style>

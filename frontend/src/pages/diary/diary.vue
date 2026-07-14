@@ -275,10 +275,10 @@ async function deleteNote(id) {
 </script>
 
 <style lang="scss" scoped>
-.diary-page { min-height: 100vh; background: #FFF5F7; padding: 16rpx 24rpx; }
+.diary-page { min-height: 100vh; background: var(--bg-page, #FFF5F7); padding: 16rpx 24rpx; }
 
 .month-header { display: flex; justify-content: space-between; align-items: center; padding: 20rpx 0; }
-.month-arrow { font-size: 36rpx; color: #FF7B93; padding: 12rpx; }
+.month-arrow { font-size: 36rpx; color: var(--color-primary, #FF7B93); padding: 12rpx; }
 .month-title { font-size: 34rpx; font-weight: 700; color: #4A4A4A; }
 
 .weekdays { display: flex; margin-bottom: 8rpx; }
@@ -287,30 +287,30 @@ async function deleteNote(id) {
 .calendar { display: flex; flex-wrap: wrap; background: #FFF; border-radius: 16rpx; padding: 8rpx; }
 .cal-cell { width: calc(100% / 7); aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; border-radius: 12rpx; overflow: hidden; }
 .cal-cell.dim { opacity: 0; pointer-events: none; }
-.cal-cell.today { background: #FFF0F3; }
+.cal-cell.today { background: var(--bg-input, #FFF0F3); }
 .cal-cell.hasOrder { font-weight: 700; }
 .cal-day { font-size: 24rpx; color: #4A4A4A; }
-.cal-dot { width: 8rpx; height: 8rpx; border-radius: 50%; background: #FF7B93; position: absolute; bottom: 4rpx; }
-.cal-special-text { font-size: 16rpx; color: #FF7B93; position: absolute; bottom: 4rpx; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90%; }
+.cal-dot { width: 8rpx; height: 8rpx; border-radius: 50%; background: var(--color-primary, #FF7B93); position: absolute; bottom: 4rpx; }
+.cal-special-text { font-size: 16rpx; color: var(--color-primary, #FF7B93); position: absolute; bottom: 4rpx; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90%; }
 
 .month-summary { text-align: center; }
 .ms-title { font-size: 28rpx; font-weight: 600; color: #4A4A4A; display: block; margin-bottom: 20rpx; }
 .ms-row { display: flex; gap: 12rpx; margin-bottom: 20rpx; }
-.ms-item { flex: 1; background: #FFF5F7; border-radius: 12rpx; padding: 20rpx 12rpx; }
-.ms-num { font-size: 36rpx; font-weight: 700; color: #FF7B93; display: block; }
+.ms-item { flex: 1; background: var(--bg-page, #FFF5F7); border-radius: 12rpx; padding: 20rpx 12rpx; }
+.ms-num { font-size: 36rpx; font-weight: 700; color: var(--color-primary, #FF7B93); display: block; }
 .ms-label { font-size: 22rpx; color: #999; margin-top: 4rpx; display: block; }
 .ms-hint { font-size: 22rpx; color: #CCC; }
 
 .card { background: #FFF; border-radius: 16rpx; padding: 24rpx; margin-top: 16rpx; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04); }
-.date-title { font-size: 32rpx; font-weight: 700; color: #FF7B93; display: block; margin-bottom: 16rpx; }
+.date-title { font-size: 32rpx; font-weight: 700; color: var(--color-primary, #FF7B93); display: block; margin-bottom: 16rpx; }
 
 .day-section { margin-bottom: 20rpx; }
 .day-label { font-size: 24rpx; font-weight: 600; color: #888; display: block; margin-bottom: 8rpx; }
-.day-order { background: #FFF5F7; border-radius: 12rpx; padding: 16rpx 20rpx; margin-bottom: 10rpx; }
+.day-order { background: var(--bg-page, #FFF5F7); border-radius: 12rpx; padding: 16rpx 20rpx; margin-bottom: 10rpx; }
 .do-line { display: flex; padding: 4rpx 0; }
 .do-label { font-size: 24rpx; color: #999; width: 100rpx; flex-shrink: 0; }
 .do-val { font-size: 24rpx; color: #4A4A4A; }
-.do-total { font-size: 28rpx; font-weight: 700; color: #FF7B93; text-align: right; margin-top: 6rpx; }
+.do-total { font-size: 28rpx; font-weight: 700; color: var(--color-primary, #FF7B93); text-align: right; margin-top: 6rpx; }
 
 .photo-grid { display: flex; flex-wrap: wrap; gap: 8rpx; }
 .photo-thumb { width: calc(33.33% - 6rpx); aspect-ratio: 1; border-radius: 8rpx; }
@@ -319,12 +319,12 @@ async function deleteNote(id) {
 .note-item { padding: 16rpx 0; border-bottom: 1rpx solid #F5F5F5; }
 .note-item:last-child { border-bottom: none; }
 .note-header { display: flex; align-items: center; gap: 8rpx; margin-bottom: 8rpx; }
-.note-user { font-size: 24rpx; font-weight: 600; color: #FF7B93; }
+.note-user { font-size: 24rpx; font-weight: 600; color: var(--color-primary, #FF7B93); }
 .note-mood { font-size: 24rpx; }
 .note-time { font-size: 20rpx; color: #CCC; margin-left: auto; }
 .note-del { font-size: 24rpx; padding: 4rpx; }
 .note-content { font-size: 26rpx; color: #4A4A4A; line-height: 1.6; }
-.note-add { text-align: center; padding: 16rpx; color: #FF7B93; font-size: 26rpx; }
+.note-add { text-align: center; padding: 16rpx; color: var(--color-primary, #FF7B93); font-size: 26rpx; }
 
 .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 100; }
 .modal-card { width: 600rpx; background: #FFF; border-radius: 24rpx; padding: 40rpx; }
@@ -332,7 +332,7 @@ async function deleteNote(id) {
 .view-toggle { display: flex; justify-content: center; padding: 12rpx 0; }
 .vt-seg { display: flex; background: #F0F0F0; border-radius: 24rpx; padding: 4rpx; }
 .vt-btn { font-size: 26rpx; padding: 12rpx 32rpx; border-radius: 20rpx; color: #999; }
-.vt-btn.active { background: #FFF; color: #FF7B93; font-weight: 600; box-shadow: 0 2rpx 6rpx rgba(0,0,0,0.08); }
+.vt-btn.active { background: #FFF; color: var(--color-primary, #FF7B93); font-weight: 600; box-shadow: 0 2rpx 6rpx rgba(0,0,0,0.08); }
 
 .diary-list-view { background: #FFF; border-radius: 16rpx; padding: 16rpx; }
 .diary-list-item { padding: 20rpx 16rpx; border-bottom: 1rpx solid #F5F5F5; }
@@ -344,7 +344,7 @@ async function deleteNote(id) {
 
 .mood-pick { display: flex; justify-content: center; gap: 16rpx; margin-bottom: 20rpx; }
 .mood-opt { font-size: 44rpx; padding: 4rpx; border-radius: 8rpx; }
-.mood-opt.selected { background: #FFF0F3; }
-.note-textarea { background: #FFF5F7; border-radius: 12rpx; padding: 20rpx; font-size: 26rpx; width: 100%; min-height: 160rpx; margin-bottom: 20rpx; box-sizing: border-box; }
-.note-save-btn { background: linear-gradient(135deg,#FF7B93,#FFB3C6); color: #FFF; border-radius: 24rpx; font-size: 28rpx; padding: 20rpx; border: none; }
+.mood-opt.selected { background: var(--bg-input, #FFF0F3); }
+.note-textarea { background: var(--bg-page, #FFF5F7); border-radius: 12rpx; padding: 20rpx; font-size: 26rpx; width: 100%; min-height: 160rpx; margin-bottom: 20rpx; box-sizing: border-box; }
+.note-save-btn { background: linear-gradient(135deg,var(--color-primary, #FF7B93),var(--color-primary-light, #FFB3C6)); color: #FFF; border-radius: 24rpx; font-size: 28rpx; padding: 20rpx; border: none; }
 </style>

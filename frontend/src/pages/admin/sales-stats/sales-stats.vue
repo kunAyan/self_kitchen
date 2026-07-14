@@ -117,7 +117,7 @@ function mealLabel(type) {
 <style lang="scss" scoped>
 .sales-stats-page {
   min-height: 100vh;
-  background: #FFF5F7;
+  background: var(--bg-page, #FFF5F7);
   padding: 24rpx;
 }
 
@@ -208,7 +208,7 @@ function mealLabel(type) {
 
 .dish-price {
   font-size: 22rpx;
-  color: #FF7B93;
+  color: var(--color-primary, #FF7B93);
   margin-top: 4rpx;
   display: block;
 }
@@ -221,7 +221,7 @@ function mealLabel(type) {
 .count-num {
   font-size: 32rpx;
   font-weight: 700;
-  color: #FF7B93;
+  color: var(--color-primary, #FF7B93);
 }
 
 .count-label {
@@ -239,7 +239,7 @@ function mealLabel(type) {
 
 .meal-card {
   width: calc(33.33% - 8rpx);
-  background: #FFF5F7;
+  background: var(--bg-page, #FFF5F7);
   border-radius: 14rpx;
   padding: 20rpx 12rpx;
   text-align: center;
@@ -261,7 +261,7 @@ function mealLabel(type) {
 .meal-count {
   font-size: 32rpx;
   font-weight: 700;
-  color: #FF7B93;
+  color: var(--color-primary, #FF7B93);
   display: block;
 }
 
@@ -273,7 +273,7 @@ function mealLabel(type) {
 }
 
 .month-card {
-  background: #FFF5F7;
+  background: var(--bg-page, #FFF5F7);
   border-radius: 14rpx;
   padding: 20rpx 24rpx;
   display: flex;
@@ -300,7 +300,7 @@ function mealLabel(type) {
 .month-amount {
   font-size: 28rpx;
   font-weight: 700;
-  color: #FF7B93;
+  color: var(--color-primary, #FF7B93);
   display: block;
   margin-top: 2rpx;
 }

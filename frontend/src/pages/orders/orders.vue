@@ -82,16 +82,16 @@ function goDetail(id) { uni.navigateTo({ url: `/pages/order-detail/order-detail?
 </script>
 
 <style lang="scss" scoped>
-.orders-page { min-height: 100vh; background: #FFF5F7; }
+.orders-page { min-height: 100vh; background: var(--bg-page, #FFF5F7); }
 .status-tabs { display: flex; background: #FFF; padding: 8rpx 24rpx; gap: 8rpx; }
 .status-tab { flex: 1; text-align: center; padding: 16rpx 0; font-size: 24rpx; color: #999; border-radius: 12rpx; }
-.status-tab.active { color: #FF7B93; font-weight: 600; background: #FFF0F3; }
+.status-tab.active { color: var(--color-primary, #FF7B93); font-weight: 600; background: var(--bg-input, #FFF0F3); }
 .order-list { padding: 16rpx 24rpx; }
 .order-card { background: #FFF; border-radius: 16rpx; padding: 24rpx; margin-bottom: 16rpx; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04); }
 .order-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8rpx; }
 .order-badges { display: flex; gap: 8rpx; align-items: center; }
 .meal-badge { font-size: 22rpx; }
-.order-amount { font-size: 36rpx; font-weight: 700; color: #FF7B93; }
+.order-amount { font-size: 36rpx; font-weight: 700; color: var(--color-primary, #FF7B93); }
 .order-meta { display: flex; gap: 16rpx; margin-bottom: 6rpx; }
 .order-no { font-size: 22rpx; color: #AAA; }
 .order-chef { font-size: 22rpx; color: #888; }

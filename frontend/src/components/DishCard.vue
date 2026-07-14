@@ -51,7 +51,7 @@ const placeholderColors = {
   '✨': '#F5F0FF',
 }
 const placeholderColor = computed(() => {
-  return placeholderColors[props.dish.category_icon] || '#FFF0F3'
+  return placeholderColors[props.dish.category_icon] || 'var(--bg-input, #FFF0F3)'
 })
 
 function onAdd() {
@@ -64,7 +64,7 @@ function onAdd() {
 <style lang="scss" scoped>
 .dish-card {
   position: relative;
-  background: #FFFFFF;
+  background: var(--bg-card, #FFFFFF);
   border-radius: 16rpx;
   overflow: hidden;
   box-shadow: 0 2rpx 12rpx rgba(255, 123, 147, 0.08);
@@ -127,14 +127,14 @@ function onAdd() {
 .dish-price {
   font-size: 30rpx;
   font-weight: 700;
-  color: #FF7B93;
+  color: var(--color-primary, #FF7B93);
 }
 
 .add-btn {
   width: 48rpx;
   height: 48rpx;
   border-radius: 50%;
-  background: linear-gradient(135deg, #FF7B93, #FFB3C6);
+  background: linear-gradient(135deg, var(--color-primary, #FF7B93), var(--color-primary-light, #FFB3C6));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -146,7 +146,7 @@ function onAdd() {
 }
 
 .add-icon {
-  color: #FFFFFF;
+  color: var(--bg-card, #FFFFFF);
   font-size: 32rpx;
   font-weight: 600;
   line-height: 1;
