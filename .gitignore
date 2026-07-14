@@ -1,0 +1,43 @@
+# Claude
+.claude/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+instance/
+*.db
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Virtual env
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/unpackage/
+
+# Memory
+memory/
+
+# Plans
+.claude/plans/
+
+# Docs specs (keep README)
+docs/superpowers/

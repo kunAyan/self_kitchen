@@ -1,0 +1,43 @@
+{
+  "easycom": { "autoscan": true },
+  "pages": [
+    { "path": "pages/login/login", "style": { "navigationBarTitleText": "登录", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white", "navigationStyle": "custom" }},
+    { "path": "pages/store-intro/store-intro", "style": { "navigationBarTitleText": "木糯小厨", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }},
+    { "path": "pages/index/index", "style": { "navigationBarTitleText": "木糯小厨", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }},
+    { "path": "pages/dish-detail/dish-detail", "style": { "navigationBarTitleText": "菜品详情", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }},
+    { "path": "pages/cart/cart", "style": { "navigationBarTitleText": "购物车", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }},
+    { "path": "pages/orders/orders", "style": { "navigationBarTitleText": "我的订单", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }},
+    { "path": "pages/order-detail/order-detail", "style": { "navigationBarTitleText": "订单详情", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }},
+    { "path": "pages/profile/profile", "style": { "navigationBarTitleText": "我的", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }},
+    { "path": "pages/diary/diary", "style": { "navigationBarTitleText": "木糯日记", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }},
+    { "path": "pages/admin/dashboard/dashboard", "style": { "navigationBarTitleText": "管理后台", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }},
+    { "path": "pages/admin/categories/categories", "style": { "navigationBarTitleText": "分类管理", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }},
+    { "path": "pages/admin/dishes/dishes", "style": { "navigationBarTitleText": "菜品管理", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }},
+    { "path": "pages/admin/dish-form/dish-form", "style": { "navigationBarTitleText": "编辑菜品", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }},
+    { "path": "pages/admin/orders/orders", "style": { "navigationBarTitleText": "订单管理", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }},
+    { "path": "pages/admin/user/user", "style": { "navigationBarTitleText": "用户管理", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }},
+    { "path": "pages/admin/store-config/store-config", "style": { "navigationBarTitleText": "店铺配置", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }},
+    { "path": "pages/admin/special-dates/special-dates", "style": { "navigationBarTitleText": "纪念日管理", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }},
+    { "path": "pages/admin/today-special/today-special", "style": { "navigationBarTitleText": "今日特供", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }},
+    { "path": "pages/admin/sales-stats/sales-stats", "style": { "navigationBarTitleText": "销量统计", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }},
+    { "path": "pages/admin/monthly-report/monthly-report", "style": { "navigationBarTitleText": "月度报告", "navigationBarBackgroundColor": "#FF7B93", "navigationBarTextStyle": "white" }}
+  ],
+  "globalStyle": {
+    "navigationBarBackgroundColor": "#FF7B93",
+    "navigationBarTitleText": "木糯小厨",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#FFF5F7"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#FF7B93",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/index/index", "text": "🍳 菜单" },
+      { "pagePath": "pages/diary/diary", "text": "📅 日记" },
+      { "pagePath": "pages/orders/orders", "text": "📋 订单" },
+      { "pagePath": "pages/profile/profile", "text": "👤 我的" }
+    ]
+  }
+}
