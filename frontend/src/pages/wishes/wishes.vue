@@ -58,8 +58,8 @@
     <view v-if="showAdd" class="modal-overlay" @click="showAdd = false">
       <view class="modal-card" @click.stop>
         <text class="modal-title">🌟 许个愿吧</text>
-        <input class="modal-input" v-model="newTitle" placeholder="想吃什么菜？" maxlength="50" style="width:100%;box-sizing:border-box;" />
-        <textarea class="modal-textarea" v-model="newDesc" placeholder="描述一下（选填）" maxlength="200" style="width:100%;box-sizing:border-box;" />
+        <input class="modal-input" v-model="newTitle" placeholder="想吃什么菜？" maxlength="50" style="width:100%;height:80rpx;line-height:80rpx;padding:0 20rpx;box-sizing:border-box;" />
+        <textarea class="modal-textarea" v-model="newDesc" placeholder="描述一下（选填）" maxlength="200" style="width:100%;height:120rpx;padding:16rpx 20rpx;box-sizing:border-box;" />
         <view class="priority-row">
           <text class="priority-label">优先级</text>
           <view class="priority-chips">
@@ -80,7 +80,7 @@
       <view class="modal-card" @click.stop>
         <text class="modal-title">✨ 实现愿望</text>
         <text class="fulfill-name">「{{ fulfillTarget?.title }}」</text>
-        <input class="modal-input" v-model="fulfillNote" placeholder="说点什么（选填）" maxlength="100" style="width:100%;box-sizing:border-box;" />
+        <input class="modal-input" v-model="fulfillNote" placeholder="说点什么（选填）" maxlength="100" style="width:100%;height:80rpx;line-height:80rpx;padding:0 20rpx;box-sizing:border-box;" />
         <view class="modal-btns">
           <button class="mbtn cancel" @click="showFulfill = false">取消</button>
           <button class="mbtn confirm" :loading="saving" @click="confirmFulfill">实现</button>
