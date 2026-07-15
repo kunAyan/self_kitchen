@@ -16,7 +16,7 @@
         <text v-for="d in weekdays" :key="d" class="wd">{{ d }}</text>
       </view>
       <view class="calendar">
-        <view v-for="(day, i) in calendarDays" :key="i" class="cal-cell" :class="{ dim: !day, today: isToday(day), hasOrder: hasOrder(day), special: hasSpecial(day) }" @click="day ? selectDate(day) : null">
+        <view v-for="(day, i) in calendarDays" :key="i" class="cal-cell" :class="{ dim: !day, today: isToday(day), selected: isSelected(day), hasOrder: hasOrder(day), special: hasSpecial(day) }" @click="day ? selectDate(day) : null">
           <view v-if="day" class="cal-moods">
             <text v-for="(m, mi) in getMoods(day)" :key="mi" class="cal-mood-emoji">{{ m.mood }}</text>
           </view>
@@ -191,6 +191,10 @@ function isToday(d) {
   const t = new Date()
   return year.value === t.getFullYear() && month.value === t.getMonth() + 1 && d === t.getDate()
 }
+function isSelected(d) {
+  if (!d || !selectedDate.value) return false
+  return dateStr(d) === selectedDate.value
+}
 function dateStr(d) {
   return `${year.value}-${String(month.value).padStart(2, '0')}-${String(d).padStart(2, '0')}`
 }
@@ -341,6 +345,7 @@ async function deleteMoodNote(noteId) {
 .cal-cell { width: calc(100% / 7); height: 120rpx; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; border-radius: 12rpx; overflow: hidden; }
 .cal-cell.dim { opacity: 0; pointer-events: none; }
 .cal-cell.today { background: var(--bg-input, #FFF0F3); }
+.cal-cell.selected { background: #FFE0E7; border: 2rpx solid var(--color-primary, #FF7B93); border-radius: 12rpx; }
 .cal-cell.hasOrder { font-weight: 700; }
 .cal-moods { display: flex; justify-content: center; gap: 2rpx; height: 32rpx; align-items: center; margin-bottom: 2rpx; }
 .cal-mood-emoji { font-size: 24rpx; line-height: 1; }
