@@ -60,8 +60,7 @@
           <view v-for="u in allUsersMoods" :key="u.user_id" class="mood-user-row">
             <text class="mood-user-nickname">{{ u.nickname }}</text>
             <text v-if="u.mood" class="mood-user-emoji">{{ u.mood }}</text>
-            <text v-if="u.mood && u.content" class="mood-user-desc">"{{ u.content }}"</text>
-            <text v-else-if="!u.mood" class="mood-user-empty">— (未记录)</text>
+            <text v-if="u.content" class="mood-user-desc">"{{ u.content }}"</text>
             <text v-if="u.mood && (u.user_id === authStore.user?.id || authStore.isAdmin)" class="mood-user-del" @click="deleteMoodNote(u.note_id)">🗑️</text>
           </view>
         </view>
@@ -299,10 +298,8 @@ async function deleteNote(id) {
 }
 
 const allUsersMoods = computed(() => {
-  // Get all family members' moods for the selected date
-  // Build from existing dayNotes data
+  // Only show users who wrote a note (with or without mood) on this date
   const moodMap = {}
-  // Populate from dayNotes (notes already have user_id, mood, content)
   for (const note of dayNotes.value) {
     if (note.mood || note.content) {
       moodMap[note.user_id] = {
@@ -311,21 +308,6 @@ const allUsersMoods = computed(() => {
         mood: note.mood || '',
         content: note.content || '',
         note_id: note.id,
-      }
-    }
-  }
-  // Also check dayOrders for users who ordered but haven't written mood
-  const seen = new Set(Object.keys(moodMap))
-  for (const o of dayOrders.value) {
-    const uid = String(o.user_id)
-    if (!seen.has(uid)) {
-      seen.add(uid)
-      moodMap[uid] = {
-        user_id: o.user_id,
-        nickname: o.user_nickname,
-        mood: '',
-        content: '',
-        note_id: null,
       }
     }
   }
