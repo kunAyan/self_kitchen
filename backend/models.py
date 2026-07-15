@@ -21,7 +21,6 @@ class User(db.Model):
     avatar = db.Column(db.String(256), default='')
     favorite_dish_ids = db.Column(db.Text, default='[]')  # JSON array of dish IDs
     badge_title = db.Column(db.String(50), default='')      # selected achievement title
-    wish_coins = db.Column(db.Integer, default=3)            # monthly wish coins
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     orders = db.relationship('Order', backref='user', lazy='dynamic',
@@ -48,7 +47,6 @@ class User(db.Model):
             'avatar': self.avatar,
             'favorite_dish_ids': self.favorite_dish_ids,
             'badge_title': self.badge_title,
-            'wish_coins': self.wish_coins,
             'created_at': self.created_at.isoformat() if self.created_at else None,
         }
 
@@ -357,18 +355,17 @@ class TodaySpecial(db.Model):
 
 
 class Wish(db.Model):
-    """Wishing pool - users suggest dishes they want."""
+    """Wishing pool - users suggest dishes they want (or anything else)."""
     __tablename__ = 'wishes'
 
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     title = db.Column(db.String(120), nullable=False)
     description = db.Column(db.Text, default='')
+    category = db.Column(db.String(20), default='dish')   # 'dish' | 'free'
     status = db.Column(db.String(20), default='pending')  # pending | fulfilled
-    likes = db.Column(db.Integer, default=0)
-    coins = db.Column(db.Integer, default=0)                 # total coins invested
-    priority = db.Column(db.Integer, default=2)              # 1=随便 2=想吃 3=超想
-    fulfill_note = db.Column(db.Text, default='')            # admin note on fulfill
+    priority = db.Column(db.Integer, default=2)           # 1=随便 2=想吃 3=超想
+    fulfill_note = db.Column(db.Text, default='')         # admin note on fulfill
     created_at = db.Column(db.DateTime, default=lambda: datetime.now(timezone.utc))
 
     user = db.relationship('User', backref='wishes')
@@ -378,8 +375,9 @@ class Wish(db.Model):
             'id': self.id, 'user_id': self.user_id,
             'user_nickname': self.user.nickname if self.user else '',
             'title': self.title, 'description': self.description,
-            'status': self.status, 'likes': self.likes,
-            'coins': self.coins, 'priority': self.priority,
+            'category': self.category,
+            'status': self.status,
+            'priority': self.priority,
             'fulfill_note': self.fulfill_note,
             'created_at': self.created_at.isoformat() if self.created_at else None,
         }
