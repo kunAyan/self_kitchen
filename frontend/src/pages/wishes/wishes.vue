@@ -22,22 +22,20 @@
         <text class="empty-icon">🌟</text>
         <text class="empty-text">{{ category === 'dish' ? '还没有菜品愿望，快来许第一个愿吧~' : '还没有自由愿望，写下一个吧~' }}</text>
       </view>
-      <view v-for="w in pendingWishes" :key="w.id" class="wish-card" :class="'priority-' + w.priority">
+      <view v-for="w in pendingWishes" :key="w.id" class="wish-card" :class="'priority-' + w.priority" @click="showDetail(w)">
         <view class="wc-priority-bar"></view>
         <view class="wc-main">
-          <view class="wc-top">
-            <view class="wc-body">
-              <view class="wc-title-row">
-                <text class="wc-type-icon">{{ category === 'dish' ? '🍽️' : '💫' }}</text>
-                <text class="wc-title">{{ w.title }}</text>
-              </view>
-              <text class="wc-desc" v-if="w.description">"{{ w.description }}"</text>
-              <text class="wc-meta">{{ w.user_nickname }} · {{ fmt(w.created_at) }} · {{ prioLabel(w.priority) }}</text>
+          <view class="wc-body">
+            <view class="wc-title-row">
+              <text class="wc-type-icon">{{ category === 'dish' ? '🍽️' : '💫' }}</text>
+              <text class="wc-title">{{ w.title }}</text>
             </view>
+            <text class="wc-desc" v-if="w.description">"{{ w.description }}"</text>
+            <text class="wc-meta">{{ w.user_nickname }} · {{ fmt(w.created_at) }} · {{ prioLabel(w.priority) }}</text>
           </view>
-          <view class="wc-actions">
-            <text v-if="w.user_id === authStore.user?.id || authStore.isAdmin" class="wc-del" @click="doDelete(w)">🗑️</text>
-            <text v-if="authStore.isAdmin" class="wc-fulfill" @click="doFulfill(w)">✨ 实现</text>
+          <view class="wc-actions" @click.stop>
+            <text v-if="w.user_id === authStore.user?.id || authStore.isAdmin" class="wc-del" @click="doDelete(w)">🗑️ 删除</text>
+            <text v-if="authStore.isAdmin" class="wc-fulfill" @click="doFulfill(w)">✨ 实现愿望</text>
           </view>
         </view>
       </view>
@@ -76,9 +74,11 @@
         <view class="priority-row">
           <text class="priority-label">优先级</text>
           <view class="priority-chips">
-            <text class="pchip" :class="{ active: priority === 3 }" @click="priority = 3">🔥超想</text>
-            <text class="pchip" :class="{ active: priority === 2 }" @click="priority = 2">😋想吃</text>
-            <text class="pchip" :class="{ active: priority === 1 }" @click="priority = 1">🤔随便</text>
+            <text class="pchip" :class="{ active: priority === 5 }" @click="priority = 5">🔥超想</text>
+            <text class="pchip" :class="{ active: priority === 4 }" @click="priority = 4">⭐很想</text>
+            <text class="pchip" :class="{ active: priority === 3 }" @click="priority = 3">😋想要</text>
+            <text class="pchip" :class="{ active: priority === 2 }" @click="priority = 2">🤔可以</text>
+            <text class="pchip" :class="{ active: priority === 1 }" @click="priority = 1">💭随便</text>
           </view>
         </view>
         <view class="modal-btns">
@@ -100,6 +100,27 @@
         </view>
       </view>
     </view>
+
+    <!-- Detail modal -->
+    <view v-if="detailWish" class="modal-overlay" @click="detailWish = null">
+      <view class="modal-card detail-modal" @click.stop>
+        <view class="detail-prio-bar" :class="'prio-bg-' + detailWish.priority"></view>
+        <text class="detail-type">{{ detailWish.category === 'dish' ? '🍽️ 菜品许愿' : '💫 自由愿望' }}</text>
+        <text class="detail-title">{{ detailWish.title }}</text>
+        <text class="detail-desc" v-if="detailWish.description">"{{ detailWish.description }}"</text>
+        <view class="detail-meta-row">
+          <text class="detail-user">{{ detailWish.user_nickname }}</text>
+          <text class="detail-prio">{{ prioLabel(detailWish.priority) }}</text>
+          <text class="detail-date">{{ fmt(detailWish.created_at) }}</text>
+        </view>
+        <view v-if="detailWish.fulfill_note" class="detail-fulfill-note">👨‍🍳 大厨回复：{{ detailWish.fulfill_note }}</view>
+        <view class="detail-actions" v-if="detailWish.status === 'pending'">
+          <text v-if="detailWish.user_id === authStore.user?.id || authStore.isAdmin" class="wc-del big" @click="doDeleteFromDetail()">🗑️ 删除</text>
+          <text v-if="authStore.isAdmin" class="wc-fulfill big" @click="doFulfillFromDetail()">✨ 实现愿望</text>
+        </view>
+        <button class="detail-close" @click="detailWish = null">关闭</button>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -116,7 +137,8 @@ const showAdd = ref(false)
 const showFulfill = ref(false)
 const newTitle = ref('')
 const newDesc = ref('')
-const priority = ref(2)
+const priority = ref(3)
+const detailWish = ref(null)
 const fulfillTarget = ref(null)
 const fulfillNote = ref('')
 const saving = ref(false)
@@ -136,7 +158,20 @@ async function fetchWishes() {
   } catch (e) { console.error(e) }
 }
 
-function prioLabel(p) { const m = { 3: '🔥超想', 2: '😋想吃', 1: '🤔随便' }; return m[p] || '' }
+function prioLabel(p) {
+  const m = { 5: '🔥超想', 4: '⭐很想', 3: '😋想要', 2: '🤔可以', 1: '💭随便' }
+  return m[p] || ''
+}
+
+function showDetail(w) { detailWish.value = w }
+function doDeleteFromDetail() {
+  doDelete(detailWish.value)
+  detailWish.value = null
+}
+function doFulfillFromDetail() {
+  doFulfill(detailWish.value)
+  detailWish.value = null
+}
 
 function fmt(iso) {
   if (!iso) return ''
@@ -155,7 +190,7 @@ async function submitWish() {
       priority: priority.value,
     })
     uni.showToast({ title: '许愿成功！', icon: 'success' })
-    showAdd.value = false; newTitle.value = ''; newDesc.value = ''; priority.value = 2
+    showAdd.value = false; newTitle.value = ''; newDesc.value = ''; priority.value = 3
     fetchWishes()
   } catch (e) { uni.showToast({ title: e.msg || '失败', icon: 'none' }) }
   finally { saving.value = false }
@@ -206,10 +241,12 @@ function doDelete(w) {
 /* Wish card */
 .wish-card { display: flex; background: #FFF; border-radius: 16rpx; margin-bottom: 12rpx; overflow: hidden; box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.04); }
 .wish-card.fulfilled { opacity: 0.7; }
-.wc-priority-bar { width: 8rpx; flex-shrink: 0; background: #E0E0E0; }
-.wish-card.priority-3 .wc-priority-bar { background: #FF6B6B; }
-.wish-card.priority-2 .wc-priority-bar { background: #FFB347; }
-.wish-card.priority-1 .wc-priority-bar { background: #E0E0E0; }
+.wc-priority-bar { width: 10rpx; flex-shrink: 0; background: #E8E8E8; }
+.wish-card.priority-5 .wc-priority-bar { background: #FF4444; }
+.wish-card.priority-4 .wc-priority-bar { background: #FF8C00; }
+.wish-card.priority-3 .wc-priority-bar { background: #FFB347; }
+.wish-card.priority-2 .wc-priority-bar { background: #C0C0C0; }
+.wish-card.priority-1 .wc-priority-bar { background: #E8E8E8; }
 .wc-priority-bar.done { background: #4CAF50; }
 
 .wc-main { flex: 1; padding: 20rpx; display: flex; justify-content: space-between; align-items: flex-start; min-width: 0; }
@@ -222,9 +259,11 @@ function doDelete(w) {
 .wc-meta { font-size: 22rpx; color: #CCC; margin-top: 6rpx; display: block; }
 .wc-fulfill-note { font-size: 22rpx; color: #FF7B93; margin-top: 4rpx; display: block; }
 
-.wc-actions { display: flex; align-items: center; gap: 8rpx; flex-shrink: 0; margin-left: 12rpx; }
-.wc-del { font-size: 28rpx; padding: 4rpx; color: #CCC; }
-.wc-fulfill { font-size: 24rpx; color: #FFF; background: linear-gradient(135deg,#FF7B93,#FFB3C6); padding: 8rpx 16rpx; border-radius: 20rpx; font-weight: 600; white-space: nowrap; }
+.wc-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8rpx; flex-shrink: 0; margin-left: 16rpx; }
+.wc-del { font-size: 26rpx; padding: 8rpx 16rpx; color: #999; background: #F5F5F5; border-radius: 16rpx; }
+.wc-del.big { font-size: 28rpx; padding: 16rpx 32rpx; }
+.wc-fulfill { font-size: 26rpx; color: #FFF; background: linear-gradient(135deg,#FF7B93,#FFB3C6); padding: 8rpx 16rpx; border-radius: 20rpx; font-weight: 600; white-space: nowrap; }
+.wc-fulfill.big { font-size: 28rpx; padding: 16rpx 32rpx; }
 
 /* Priority chips in modal */
 .priority-row { display: flex; align-items: center; gap: 12rpx; padding: 12rpx 0; margin-bottom: 12rpx; }
@@ -248,4 +287,23 @@ function doDelete(w) {
 .mbtn { flex: 1; padding: 18rpx; border-radius: 24rpx; font-size: 28rpx; border: none; }
 .mbtn.cancel { background: #F5F5F5; color: #999; }
 .mbtn.confirm { background: linear-gradient(135deg,#FF7B93,#FFB3C6); color: #FFF; }
+
+/* Detail modal */
+.detail-modal { padding: 0; overflow: hidden; position: relative; }
+.detail-prio-bar { height: 8rpx; }
+.detail-prio-bar.prio-bg-5 { background: #FF4444; }
+.detail-prio-bar.prio-bg-4 { background: #FF8C00; }
+.detail-prio-bar.prio-bg-3 { background: #FFB347; }
+.detail-prio-bar.prio-bg-2 { background: #C0C0C0; }
+.detail-prio-bar.prio-bg-1 { background: #E8E8E8; }
+.detail-type { font-size: 24rpx; color: #999; display: block; padding: 28rpx 32rpx 6rpx; }
+.detail-title { font-size: 36rpx; font-weight: 700; color: #4A4A4A; display: block; padding: 0 32rpx 4rpx; }
+.detail-desc { font-size: 28rpx; color: #666; display: block; padding: 8rpx 32rpx; line-height: 1.6; }
+.detail-meta-row { display: flex; gap: 16rpx; padding: 16rpx 32rpx 4rpx; align-items: center; }
+.detail-user { font-size: 24rpx; color: #999; }
+.detail-prio { font-size: 24rpx; color: #FF7B93; font-weight: 600; }
+.detail-date { font-size: 24rpx; color: #CCC; }
+.detail-fulfill-note { font-size: 24rpx; color: #FF7B93; padding: 12rpx 32rpx; background: #FFF5F7; margin: 16rpx 32rpx; border-radius: 12rpx; line-height: 1.5; }
+.detail-actions { display: flex; gap: 12rpx; padding: 20rpx 32rpx 32rpx; justify-content: center; }
+.detail-close { width: calc(100% - 64rpx); margin: 0 32rpx 32rpx; padding: 16rpx; border-radius: 20rpx; background: #F5F5F5; color: #999; font-size: 28rpx; border: none; }
 </style>
