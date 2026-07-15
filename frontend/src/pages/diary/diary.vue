@@ -17,9 +17,12 @@
       </view>
       <view class="calendar">
         <view v-for="(day, i) in calendarDays" :key="i" class="cal-cell" :class="{ dim: !day, today: isToday(day), hasOrder: hasOrder(day), special: hasSpecial(day) }" @click="day ? selectDate(day) : null">
+          <view v-if="day" class="cal-moods">
+            <text v-for="(m, mi) in getMoods(day)" :key="mi" class="cal-mood-emoji">{{ m.mood }}</text>
+          </view>
           <text v-if="day" class="cal-day">{{ day }}</text>
-          <text v-if="day && hasSpecial(day)" class="cal-special-text">{{ getSpecialTitle(day) }}</text>
           <view v-if="day && hasOrder(day)" class="cal-dot"></view>
+          <text v-if="day && hasSpecial(day)" class="cal-special-text">{{ getSpecialTitle(day) }}</text>
         </view>
       </view>
     </view>
@@ -49,6 +52,21 @@
     <!-- Selected date detail -->
     <view v-if="selectedDate" class="date-detail card">
       <text class="date-title">{{ selectedDate }}</text>
+
+      <!-- Moods card -->
+      <view class="day-section mood-section">
+        <text class="day-label">😊 全家心情</text>
+        <view class="mood-user-list">
+          <view v-for="u in allUsersMoods" :key="u.user_id" class="mood-user-row">
+            <text class="mood-user-nickname">{{ u.nickname }}</text>
+            <text v-if="u.mood" class="mood-user-emoji">{{ u.mood }}</text>
+            <text v-if="u.mood && u.content" class="mood-user-desc">"{{ u.content }}"</text>
+            <text v-else-if="!u.mood" class="mood-user-empty">— (未记录)</text>
+            <text v-if="u.mood && (u.user_id === authStore.user?.id || authStore.isAdmin)" class="mood-user-del" @click="deleteMoodNote(u.note_id)">🗑️</text>
+          </view>
+        </view>
+        <view class="note-add" @click="showNoteInput = true"><text>+ 写心情</text></view>
+      </view>
 
       <!-- Orders on this day -->
       <view v-if="dayOrders.length > 0" class="day-section">
@@ -117,6 +135,7 @@ const weekdays = ['一', '二', '三', '四', '五', '六', '日']
 
 const orderDates = ref({})
 const specialDates = ref([])
+const moodDates = ref({})
 const selectedDate = ref('')
 const dayPhotos = ref([])
 const dayNotes = ref([])
@@ -151,6 +170,7 @@ async function fetchMonth() {
     const res = await diaryAPI.getMonth(year.value, month.value)
     orderDates.value = res.order_dates || {}
     specialDates.value = res.special_dates || []
+    moodDates.value = res.mood_dates || {}
     monthPhotoCount.value = Object.values(res.photo_dates || {}).reduce((s, v) => s + v, 0)
     monthNoteCount.value = Object.values(res.note_dates || {}).reduce((s, v) => s + v, 0)
     selectedDate.value = ''
@@ -188,6 +208,11 @@ function getSpecialTitle(d) {
     return sd.getMonth() + 1 === month.value && sd.getDate() === d
   })
   return s ? s.icon + s.title : ''
+}
+
+function getMoods(d) {
+  const ds = dateStr(d)
+  return moodDates.value[ds] || []
 }
 
 async function selectDate(d) {
@@ -272,6 +297,52 @@ async function deleteNote(id) {
     },
   })
 }
+
+const allUsersMoods = computed(() => {
+  // Get all family members' moods for the selected date
+  // Build from existing dayNotes data
+  const moodMap = {}
+  // Populate from dayNotes (notes already have user_id, mood, content)
+  for (const note of dayNotes.value) {
+    if (note.mood || note.content) {
+      moodMap[note.user_id] = {
+        user_id: note.user_id,
+        nickname: note.user_nickname,
+        mood: note.mood || '',
+        content: note.content || '',
+        note_id: note.id,
+      }
+    }
+  }
+  // Also check dayOrders for users who ordered but haven't written mood
+  const seen = new Set(Object.keys(moodMap))
+  for (const o of dayOrders.value) {
+    const uid = String(o.user_id)
+    if (!seen.has(uid)) {
+      seen.add(uid)
+      moodMap[uid] = {
+        user_id: o.user_id,
+        nickname: o.user_nickname,
+        mood: '',
+        content: '',
+        note_id: null,
+      }
+    }
+  }
+  return Object.values(moodMap)
+})
+
+async function deleteMoodNote(noteId) {
+  if (!noteId) return
+  uni.showModal({
+    title: '删除心情', content: '确定删除这条心情吗？',
+    success: async (r) => {
+      if (r.confirm) {
+        try { await diaryAPI.deleteNote(noteId); selectDateStr(selectedDate.value) } catch (e) {}
+      }
+    },
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -285,13 +356,15 @@ async function deleteNote(id) {
 .wd { flex: 1; text-align: center; font-size: 24rpx; color: #BBB; padding: 12rpx 0; }
 
 .calendar { display: flex; flex-wrap: wrap; background: #FFF; border-radius: 16rpx; padding: 8rpx; }
-.cal-cell { width: calc(100% / 7); aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; border-radius: 12rpx; overflow: hidden; }
+.cal-cell { width: calc(100% / 7); height: 120rpx; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; border-radius: 12rpx; overflow: hidden; }
 .cal-cell.dim { opacity: 0; pointer-events: none; }
 .cal-cell.today { background: var(--bg-input, #FFF0F3); }
 .cal-cell.hasOrder { font-weight: 700; }
-.cal-day { font-size: 24rpx; color: #4A4A4A; }
-.cal-dot { width: 8rpx; height: 8rpx; border-radius: 50%; background: var(--color-primary, #FF7B93); position: absolute; bottom: 4rpx; }
-.cal-special-text { font-size: 16rpx; color: var(--color-primary, #FF7B93); position: absolute; bottom: 4rpx; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90%; }
+.cal-moods { display: flex; justify-content: center; gap: 2rpx; height: 32rpx; align-items: center; margin-bottom: 2rpx; }
+.cal-mood-emoji { font-size: 24rpx; line-height: 1; }
+.cal-day { font-size: 20rpx; color: #4A4A4A; line-height: 1; }
+.cal-dot { width: 8rpx; height: 8rpx; border-radius: 50%; background: var(--color-primary, #FF7B93); position: absolute; top: 6rpx; right: 8rpx; }
+.cal-special-text { font-size: 16rpx; color: var(--color-primary, #FF7B93); position: absolute; top: 2rpx; left: 4rpx; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90%; }
 
 .month-summary { text-align: center; }
 .ms-title { font-size: 28rpx; font-weight: 600; color: #4A4A4A; display: block; margin-bottom: 20rpx; }
@@ -306,6 +379,14 @@ async function deleteNote(id) {
 
 .day-section { margin-bottom: 20rpx; }
 .day-label { font-size: 24rpx; font-weight: 600; color: #888; display: block; margin-bottom: 8rpx; }
+.mood-section { margin-bottom: 20rpx; }
+.mood-user-list { display: flex; flex-direction: column; gap: 8rpx; }
+.mood-user-row { display: flex; align-items: center; gap: 8rpx; padding: 8rpx 0; }
+.mood-user-nickname { font-size: 24rpx; color: #999; min-width: 120rpx; }
+.mood-user-emoji { font-size: 32rpx; }
+.mood-user-desc { font-size: 24rpx; color: #4A4A4A; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mood-user-empty { font-size: 22rpx; color: #CCC; }
+.mood-user-del { font-size: 24rpx; padding: 4rpx; }
 .day-order { background: var(--bg-page, #FFF5F7); border-radius: 12rpx; padding: 16rpx 20rpx; margin-bottom: 10rpx; }
 .do-line { display: flex; padding: 4rpx 0; }
 .do-label { font-size: 24rpx; color: #999; width: 100rpx; flex-shrink: 0; }
