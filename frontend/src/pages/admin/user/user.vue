@@ -47,7 +47,7 @@
       <view class="card">
         <text class="card-title">编辑信息</text>
         <input class="info-input" v-model="editNickname" placeholder="昵称" />
-        <input class="info-input" v-model="editPassword" placeholder="新密码（留空不修改）" type="password" />
+        <input class="info-input" v-model="editPassword" placeholder="新密码（留空不修改）" password />
         <button class="save-info-btn" @click="saveUser">保存信息</button>
       </view>
 

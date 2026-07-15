@@ -19,7 +19,7 @@
         <input
           class="cute-input"
           v-model="password"
-          type="password"
+          password
           placeholder="密码"
           placeholder-style="color:#CCCCCC"
         />
