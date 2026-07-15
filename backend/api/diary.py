@@ -55,6 +55,19 @@ def get_month_diary():
         ds = n.date.isoformat() if hasattr(n.date, 'isoformat') else str(n.date)
         note_dates[ds] = note_dates.get(ds, 0) + 1
 
+    # Moods in this month (per-user, per-date)
+    mood_dates = {}
+    for n in notes:
+        if n.mood:  # only include notes that have a mood
+            ds = n.date.isoformat() if hasattr(n.date, 'isoformat') else str(n.date)
+            if ds not in mood_dates:
+                mood_dates[ds] = []
+            mood_dates[ds].append({
+                'user_id': n.user_id,
+                'nickname': n.user.nickname if n.user else '',
+                'mood': n.mood,
+            })
+
     # Special dates in this month
     specials = SpecialDate.query.filter(
         db.func.strftime('%m', SpecialDate.date) == f'{month:02d}'
@@ -65,6 +78,7 @@ def get_month_diary():
         'order_dates': order_dates,
         'photo_dates': photo_dates,
         'note_dates': note_dates,
+        'mood_dates': mood_dates,
         'special_dates': [s.to_dict() for s in specials],
     }), 200
 
