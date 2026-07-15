@@ -74,7 +74,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { ordersAPI } from '@/api/orders'
 import { dishesAPI } from '@/api/dishes'
