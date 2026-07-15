@@ -10,7 +10,14 @@ from api import wishes_bp as bp
 @bp.route('/wishes', methods=['GET'])
 @jwt_required()
 def list_wishes():
-    wishes = Wish.query.order_by(Wish.priority.desc(), Wish.coins.desc(), Wish.likes.desc(), Wish.created_at.desc()).all()
+    category = request.args.get('category', '')
+    query = Wish.query
+    if category in ('dish', 'free'):
+        query = query.filter_by(category=category)
+    wishes = query.order_by(
+        Wish.priority.desc(),
+        Wish.created_at.desc()
+    ).all()
     return jsonify({'wishes': [w.to_dict() for w in wishes]}), 200
 
 
@@ -21,11 +28,13 @@ def create_wish():
     data = request.get_json()
     title = data.get('title', '').strip()
     if not title:
-        return jsonify({'msg': '请输入想吃的菜名'}), 400
+        return jsonify({'msg': '请输入愿望内容'}), 400
 
     wish = Wish(
-        user_id=user.id, title=title,
+        user_id=user.id,
+        title=title,
         description=data.get('description', '').strip(),
+        category=data.get('category', 'dish'),
         priority=data.get('priority', 2),
     )
     db.session.add(wish)
@@ -33,27 +42,16 @@ def create_wish():
     return jsonify({'wish': wish.to_dict()}), 201
 
 
-@bp.route('/wishes/<int:wish_id>/like', methods=['POST'])
+@bp.route('/wishes/<int:wish_id>', methods=['DELETE'])
 @jwt_required()
-def like_wish(wish_id):
-    wish = Wish.query.get_or_404(wish_id)
-    wish.likes = (wish.likes or 0) + 1
-    db.session.commit()
-    return jsonify({'wish': wish.to_dict()}), 200
-
-
-@bp.route('/wishes/<int:wish_id>/coin', methods=['POST'])
-@jwt_required()
-def coin_wish(wish_id):
-    """Invest coins into a wish (costs 1 wish_coin from current user)."""
+def delete_wish(wish_id):
     user = get_current_user()
     wish = Wish.query.get_or_404(wish_id)
-    if user.wish_coins <= 0:
-        return jsonify({'msg': '许愿币不足！下月会重置', 'coins': user.wish_coins}), 400
-    user.wish_coins -= 1
-    wish.coins = (wish.coins or 0) + 1
+    if wish.user_id != user.id and user.role != 'admin':
+        return jsonify({'msg': '无权删除'}), 403
+    db.session.delete(wish)
     db.session.commit()
-    return jsonify({'wish': wish.to_dict(), 'coins_left': user.wish_coins}), 200
+    return jsonify({'msg': '已删除'}), 200
 
 
 @bp.route('/admin/wishes/<int:wish_id>/fulfill', methods=['PUT'])
@@ -69,15 +67,3 @@ def fulfill_wish(wish_id):
     wish.fulfill_note = data.get('note', '')
     db.session.commit()
     return jsonify({'wish': wish.to_dict()}), 200
-
-
-@bp.route('/wishes/<int:wish_id>', methods=['DELETE'])
-@jwt_required()
-def delete_wish(wish_id):
-    user = get_current_user()
-    wish = Wish.query.get_or_404(wish_id)
-    if wish.user_id != user.id and user.role != 'admin':
-        return jsonify({'msg': '无权删除'}), 403
-    db.session.delete(wish)
-    db.session.commit()
-    return jsonify({'msg': '已删除'}), 200
